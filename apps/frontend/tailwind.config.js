@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,10 +8,16 @@ export default {
   theme: {
     extend: {
       colors: {
+        darkThemeText: '#E0E0E0',
+        lightThemeText: '#1A1A1A',
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
         background: {
           DEFAULT: 'var(--bg-primary)',
-          light: 'var(--bg-secondary)', 
-          lighter: 'var(--bg-tertiary)',
+          light: 'var(--bg-secondary)',
+          // lighter: 'var(--bg-tertiary)',
+          lighter: '#E5E5E5',
         },
         primary: {
           DEFAULT: 'var(--primary-color)',
@@ -21,9 +28,9 @@ export default {
           DEFAULT: '#8b5cf6', // Violet 500 - keeping static for now or can make dynamic if needed
         },
         text: {
-           primary: 'var(--text-primary)',
-           secondary: 'var(--text-secondary)',
-           muted: 'var(--text-muted)',
+          primary: 'var(--text-primary)',
+          secondary: 'var(--text-secondary)',
+          muted: 'var(--text-muted)',
         },
         risk: {
           low: 'var(--status-low)',

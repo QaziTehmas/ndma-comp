@@ -1,0 +1,11 @@
+# Ignore Python cache folders
+__pycache__/
+*.pyc
+
+# Ignore everything in services folder
+backend/services/*
+
+# But do not ignore scraper.py
+!backend/services/scraper.py
+
+
