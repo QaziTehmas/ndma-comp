@@ -97,11 +97,16 @@ const MapSelector = ({ selectedLocation, citiesWeather = [], onLocationSelect })
   useEffect(() => {
     if (!mapLoaded || !mapRef.current || !selectedLocation) return;
 
-    const posKey = `${selectedLocation.latitude.toFixed(6)},${selectedLocation.longitude.toFixed(6)}`;
+    const posKey = `${selectedLocation.latitude.toFixed(6)},${selectedLocation.longitude.toFixed(6)},${selectedLocation.name}`;
     if (lastPositionRef.current === posKey) return;
     lastPositionRef.current = posKey;
 
-    if (markerRef.current) {
+    // Only remove marker if position changed (not just name)
+    const positionChanged = !markerRef.current || 
+      markerRef.current.getLatLng().lat.toFixed(6) !== selectedLocation.latitude.toFixed(6) ||
+      markerRef.current.getLatLng().lng.toFixed(6) !== selectedLocation.longitude.toFixed(6);
+
+    if (positionChanged && markerRef.current) {
       mapRef.current.removeLayer(markerRef.current);
       markerRef.current = null;
     }
@@ -113,8 +118,7 @@ const MapSelector = ({ selectedLocation, citiesWeather = [], onLocationSelect })
         NDMA_OFFICES
       );
 
-      const marker = L.marker([selectedLocation.latitude, selectedLocation.longitude])
-        .bindPopup(`
+      const popupContent = `
           <div style="padding: 12px; min-width: 200px; font-family: sans-serif;">
             <div style="margin-bottom: 8px;">
               <strong style="color:#2563eb; font-size: 15px; display:flex; align-items:center; gap:6px;">
@@ -138,11 +142,23 @@ const MapSelector = ({ selectedLocation, citiesWeather = [], onLocationSelect })
               <span style="background:#22c55e; color:white; padding:1px 4px; border-radius:3px; font-size:9px;">LIVE</span>
             </div>
           </div>
-        `)
-        .addTo(mapRef.current);
+        `;
 
-      markerRef.current = marker;
-      marker.openPopup();
+      if (positionChanged) {
+        // Create new marker
+        const marker = L.marker([selectedLocation.latitude, selectedLocation.longitude])
+          .bindPopup(popupContent)
+          .addTo(mapRef.current);
+
+        markerRef.current = marker;
+        marker.openPopup();
+      } else if (markerRef.current) {
+        // Just update popup content
+        markerRef.current.setPopupContent(popupContent);
+        if (markerRef.current.isPopupOpen()) {
+          markerRef.current.openPopup();
+        }
+      }
     } catch (err) {
       console.error('Error adding marker:', err);
     }
