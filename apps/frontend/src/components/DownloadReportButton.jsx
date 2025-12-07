@@ -76,16 +76,16 @@ const DownloadReportButton = ({
         <button
             onClick={handleDownload}
             disabled={downloading}
-            className="fixed bottom-8 right-8 z-50 group"
+            className="group"
             title="Download Alert Report"
         >
             <div className="relative">
                 <div className={`
-                    flex items-center gap-3 px-6 py-4 rounded-2xl
+                    flex items-center gap-3 px-6 py-3 rounded-2xl
                     bg-gradient-to-r from-blue-600 to-blue-700
                     hover:from-blue-700 hover:to-blue-800
-                    text-white font-bold shadow-2xl
-                    transition-all duration-300
+                    text-white font-bold 
+                    transition-all duration-200
                     ${downloading ? 'opacity-70 cursor-wait' : 'hover:scale-105 hover:shadow-blue-500/50'}
                 `}>
                     {downloading ? (
@@ -97,10 +97,6 @@ const DownloadReportButton = ({
                         {downloading ? 'Generating...' : 'Download Report'}
                     </span>
                 </div>
-
-                {!downloading && (
-                    <div className="absolute inset-0 rounded-2xl bg-blue-500 opacity-75 animate-ping" />
-                )}
 
                 <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-black/80 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none sm:hidden">
                     Download Alert Report

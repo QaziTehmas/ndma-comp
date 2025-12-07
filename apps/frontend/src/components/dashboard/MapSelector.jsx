@@ -55,7 +55,6 @@ const MapSelector = ({ selectedLocation, citiesWeather = [], onLocationSelect })
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© OpenStreetMap contributors',
           maxZoom: 19,
           minZoom: 5
         }).addTo(map);

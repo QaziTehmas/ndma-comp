@@ -11,6 +11,11 @@
   padding: 0;
 }
 
+/* remove leaflet attribution */
+.leaflet-control-attribution {
+    display: none !important;
+}
+
 :root {
   font-family: "Inconsolata", "Inter", system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;

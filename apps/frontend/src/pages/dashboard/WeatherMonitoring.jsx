@@ -130,12 +130,12 @@ const WeatherMonitoring = () => {
 
         {/* Right Section - Map + Charts */}
         <main className="flex-1 flex flex-col overflow-hidden relative">
-          {/* Map Area */}
+          {/* Map Area - Takes remaining space when charts closed, or full height when charts overlay */}
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex-1 relative bg-gray-900"
+            className="flex-1 relative bg-gray-900 pb-2"
           >
             <MapSelector
               onLocationSelect={handleLocationSelect}
@@ -152,18 +152,23 @@ const WeatherMonitoring = () => {
             weatherData={weatherData}
             isOpen={chartsVisible}
             onToggle={() => setChartsVisible(!chartsVisible)}
+            selectedLocation={selectedLocation}
+            seismicData={earthquakeSummary}
+            airQuality={airQuality}
           />
         </main>
       </div>
 
 
-      {/* Download Button with Context */}
-      <DownloadReportButton
-        selectedLocation={selectedLocation}
-        weatherData={weatherData}
-        seismicData={earthquakeSummary}
-        airQuality={airQuality}
-      />
+      {/* Download Button with Context - Higher z-index to stay above all */}
+      {/* <div className="absolute bottom-8 right-8 z-[2000]">
+        <DownloadReportButton
+          selectedLocation={selectedLocation}
+          weatherData={weatherData}
+          seismicData={earthquakeSummary}
+          airQuality={airQuality}
+        />
+      </div> */}
     </div>
   );
 };

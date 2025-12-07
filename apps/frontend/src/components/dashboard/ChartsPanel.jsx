@@ -2,29 +2,32 @@ import React from 'react';
 import { ChevronDown, ChevronUp, BarChart3 } from 'lucide-react';
 import { TemperatureForecastChart, PrecipitationChart, HumidityWindChart } from './WeatherCharts';
 import { motion, AnimatePresence } from 'framer-motion';
+import DownloadReportButton from '../DownloadReportButton';
 
 /**
  * Charts Panel - Premium dark themed, collapsible bottom panel with smooth animations
  */
-const ChartsPanel = ({ weatherData, isOpen, onToggle }) => {
+const ChartsPanel = ({ weatherData, isOpen, onToggle, selectedLocation, seismicData, airQuality }) => {
     if (!weatherData || !weatherData.forecast24h || weatherData.forecast24h.length === 0) {
         return null;
     }
 
     return (
         <motion.div
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ duration: 0.5, type: "spring", damping: 25, stiffness: 200 }}
-            className="absolute bottom-0 left-0 right-0 bg-gray-900/95 backdrop-blur-md border-t border-gray-800 z-[1000] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] max-h-[85vh] flex flex-col"
+            initial={false}
+            animate={isOpen ? { y: 0 } : { y: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className={`
+                ${isOpen ? 'absolute bottom-0 left-0 right-0 z-[1500] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] max-h-[85vh] rounded-3xl' : 'relative'}
+                bg-gray-900/95 backdrop-blur-md border-t border-gray-800 flex flex-col rounded-2xl
+            `}
         >
             {/* Toggle Header */}
-            <button
-                onClick={onToggle}
-                className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors group"
-            >
-                <div className="flex items-center gap-3">
+            <div className="w-full px-6 py-4 flex items-center justify-between">
+                <button
+                    onClick={onToggle}
+                    className="flex items-center gap-3 hover:bg-white/5 transition-colors group flex-1"
+                >
                     <div className="p-2 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
                         <BarChart3 className="w-5 h-5 text-blue-400" />
                     </div>
@@ -36,18 +39,35 @@ const ChartsPanel = ({ weatherData, isOpen, onToggle }) => {
                             Detailed breakdown of upcoming weather conditions
                         </span>
                     </div>
-                </div>
+                </button>
+                
                 <div className="flex items-center gap-3">
+                    {/* Download Report Button */}
+                    {isOpen && <div className='mr-4'>
+                        <DownloadReportButton
+                            selectedLocation={selectedLocation}
+                            weatherData={weatherData}
+                            seismicData={seismicData}
+                            airQuality={airQuality}
+                        />
+                    </div>}
+                    
                     <span className="text-xs font-mono text-gray-500 bg-gray-800 px-2 py-1 rounded border border-gray-700">
                         {weatherData.forecast24h.length} POINTS
                     </span>
-                    {isOpen ? (
-                        <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
-                    ) : (
-                        <ChevronUp className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
-                    )}
+                    
+                    <button
+                        onClick={onToggle}
+                        className="hover:bg-white/5 p-1 rounded transition-colors"
+                    >
+                        {isOpen ? (
+                            <ChevronDown className="w-5 h-5 text-gray-400 hover:text-white transition-colors" />
+                        ) : (
+                            <ChevronUp className="w-5 h-5 text-gray-400 hover:text-white transition-colors" />
+                        )}
+                    </button>
                 </div>
-            </button>
+            </div>
 
             {/* Charts Content */}
             <AnimatePresence>
