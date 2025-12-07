@@ -27,7 +27,10 @@ import {
 } from '../../services/dataLoader';
 import { TrendingUp, TrendingDown, Droplets, Thermometer, Wind, Trees } from 'lucide-react';
 
+import { useTheme } from '../../hooks/useTheme';
+
 const Analytics = () => {
+  const { themeColors } = useTheme();
   const { data, loading, error } = useMultipleData({
     disasterStats: loadDisasterStats,
     provincialVictims: loadProvincialVictims,
@@ -39,7 +42,7 @@ const Analytics = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="text-white text-xl">Loading analytics...</div>
+        <div className="text-text-primary text-xl">Loading analytics...</div>
       </div>
     );
   }
@@ -109,8 +112,8 @@ const Analytics = () => {
     <div className="p-6 space-y-6">
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Analytics Dashboard</h1>
-        <p className="text-gray-400">Comprehensive disaster and climate data analysis</p>
+        <h1 className="text-3xl font-bold text-text-primary mb-2">Analytics Dashboard</h1>
+        <p className="text-text-secondary">Comprehensive disaster and climate data analysis</p>
       </div>
 
       {/* Climate Indicators Cards */}
@@ -161,7 +164,10 @@ const Analytics = () => {
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip
+                contentStyle={{ backgroundColor: themeColors.tooltipBg, borderColor: themeColors.tooltipBorder, color: themeColors.tooltipText }}
+                itemStyle={{ color: themeColors.tooltipText }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </ChartContainer>
@@ -170,12 +176,12 @@ const Analytics = () => {
         <ChartContainer title="Provincial Flood Impact (2009-2022)">
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={provincialData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="province" stroke="#94a3b8" />
-              <YAxis stroke="#94a3b8" />
+              <CartesianGrid strokeDasharray="3 3" stroke={themeColors.grid} />
+              <XAxis dataKey="province" stroke={themeColors.axis} />
+              <YAxis stroke={themeColors.axis} />
               <Tooltip
-                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155' }}
-                labelStyle={{ color: '#f1f5f9' }}
+                contentStyle={{ backgroundColor: themeColors.tooltipBg, borderColor: themeColors.tooltipBorder, color: themeColors.tooltipText }}
+                labelStyle={{ color: themeColors.tooltipText }}
               />
               <Legend />
               <Bar dataKey="deaths" fill="#EF4444" name="Deaths" />
@@ -187,12 +193,12 @@ const Analytics = () => {
         <ChartContainer title="Major Floods Timeline (1992-2025)">
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={timelineData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="year" stroke="#94a3b8" />
-              <YAxis stroke="#94a3b8" />
+              <CartesianGrid strokeDasharray="3 3" stroke={themeColors.grid} />
+              <XAxis dataKey="year" stroke={themeColors.axis} />
+              <YAxis stroke={themeColors.axis} />
               <Tooltip
-                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155' }}
-                labelStyle={{ color: '#f1f5f9' }}
+                contentStyle={{ backgroundColor: themeColors.tooltipBg, borderColor: themeColors.tooltipBorder, color: themeColors.tooltipText }}
+                labelStyle={{ color: themeColors.tooltipText }}
               />
               <Legend />
               <Area
@@ -211,12 +217,12 @@ const Analytics = () => {
         <ChartContainer title="Monthly Temperature Growth (%)">
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={climateData?.temperature_trends?.monthly_growth_percent || []}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="month" stroke="#94a3b8" angle={-45} textAnchor="end" height={80} />
-              <YAxis stroke="#94a3b8" />
+              <CartesianGrid strokeDasharray="3 3" stroke={themeColors.grid} />
+              <XAxis dataKey="month" stroke={themeColors.axis} angle={-45} textAnchor="end" height={80} />
+              <YAxis stroke={themeColors.axis} />
               <Tooltip
-                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155' }}
-                labelStyle={{ color: '#f1f5f9' }}
+                contentStyle={{ backgroundColor: themeColors.tooltipBg, borderColor: themeColors.tooltipBorder, color: themeColors.tooltipText }}
+                labelStyle={{ color: themeColors.tooltipText }}
               />
               <Legend />
               <Line
@@ -233,73 +239,57 @@ const Analytics = () => {
 
       {/* Monsoon 2025 Case Study */}
       <div className="bg-background-light rounded-lg p-6 border border-background-lighter">
-        <h2 className="text-2xl font-bold text-white mb-6">Monsoon 2025 Case Study</h2>
+        <h2 className="text-2xl font-bold text-text-primary mb-6">Monsoon 2025 Case Study</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           <div className="bg-background rounded-lg p-4">
             <div className="text-3xl font-bold text-risk-critical mb-2">
               {monsoon2025?.summary?.total_deaths.toLocaleString()}
             </div>
-            <div className="text-sm text-gray-400">Total Deaths</div>
+            <div className="text-sm text-text-secondary">Total Deaths</div>
           </div>
           <div className="bg-background rounded-lg p-4">
             <div className="text-3xl font-bold text-risk-high mb-2">
               {monsoon2025?.summary?.total_injured.toLocaleString()}
             </div>
-            <div className="text-sm text-gray-400">Total Injured</div>
+            <div className="text-sm text-text-secondary">Total Injured</div>
           </div>
           <div className="bg-background rounded-lg p-4">
             <div className="text-3xl font-bold text-risk-medium mb-2">
               {monsoon2025?.summary?.houses_damaged.toLocaleString()}
             </div>
-            <div className="text-sm text-gray-400">Houses Damaged</div>
+            <div className="text-sm text-text-secondary">Houses Damaged</div>
           </div>
           <div className="bg-background rounded-lg p-4">
             <div className="text-3xl font-bold text-primary mb-2">
               {(monsoon2025?.summary?.people_rescued / 1000000).toFixed(2)}M
             </div>
-            <div className="text-sm text-gray-400">People Rescued</div>
+            <div className="text-sm text-text-secondary">People Rescued</div>
           </div>
         </div>
 
         {/* Provincial Breakdown */}
         <div>
-          <h3 className="text-lg font-bold text-white mb-4">Provincial Breakdown</h3>
+          <h3 className="text-lg font-bold text-text-primary mb-4">Provincial Breakdown</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {monsoon2025?.by_province &&
               Object.entries(monsoon2025.by_province).map(([province, stats]) => (
                 <div key={province} className="bg-background rounded-lg p-4 border border-background-lighter">
-                  <h4 className="font-bold text-white mb-3">{province}</h4>
+                  <h4 className="font-bold text-text-primary mb-3">{province}</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Deaths:</span>
+                      <span className="text-text-secondary">Deaths:</span>
                       <span className="text-risk-critical font-semibold">{stats.deaths}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Injured:</span>
+                      <span className="text-text-secondary">Injured:</span>
                       <span className="text-risk-high font-semibold">{stats.injured}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Houses:</span>
+                      <span className="text-text-secondary">Houses:</span>
                       <span className="text-risk-medium font-semibold">{stats.houses_damaged}</span>
                     </div>
                   </div>
-                </div>
-              ))}
-          </div>
-        </div>
-
-        {/* Relief Distributed */}
-        <div className="mt-6">
-          <h3 className="text-lg font-bold text-white mb-4">Relief Distributed</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {monsoon2025?.relief_distributed &&
-              Object.entries(monsoon2025.relief_distributed).map(([item, count]) => (
-                <div key={item} className="bg-background rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-primary mb-1">
-                    {count.toLocaleString()}
-                  </div>
-                  <div className="text-xs text-gray-400 capitalize">{item.replace(/_/g, ' ')}</div>
                 </div>
               ))}
           </div>
@@ -310,12 +300,12 @@ const Analytics = () => {
       <ChartContainer title="Disasters by Year (2015-2025)">
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={disasterStats?.disasters_by_year || []}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-            <XAxis dataKey="year" stroke="#94a3b8" />
-            <YAxis stroke="#94a3b8" />
+            <CartesianGrid strokeDasharray="3 3" stroke={themeColors.grid} />
+            <XAxis dataKey="year" stroke={themeColors.axis} />
+            <YAxis stroke={themeColors.axis} />
             <Tooltip
-              contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155' }}
-              labelStyle={{ color: '#f1f5f9' }}
+              contentStyle={{ backgroundColor: themeColors.tooltipBg, borderColor: themeColors.tooltipBorder, color: themeColors.tooltipText }}
+              labelStyle={{ color: themeColors.tooltipText }}
             />
             <Legend />
             <Bar dataKey="count" fill="#3B82F6" name="Number of Disasters" />
