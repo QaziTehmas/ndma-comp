@@ -116,6 +116,7 @@ const WeatherSidebar = ({
     citiesWeather,
     earthquakeSummary,
     airQuality,
+    riskSummary,
     onLocationSelect,
     loading
 }) => {
@@ -493,6 +494,31 @@ const WeatherSidebar = ({
                             </div>
                         </motion.div>
                     )}
+
+
+                    {/* Historical Risk Alert */}
+                    {riskSummary && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="bg-gradient-to-br from-amber-900/40 to-amber-600/10 border border-amber-500/20 rounded-xl p-3 shadow-lg relative overflow-hidden mb-3"
+                        >
+                            <div className="flex items-start gap-2 relative z-10">
+                                <div className="p-1.5 bg-amber-500/20 rounded-lg flex-shrink-0">
+                                    <AlertTriangle className="w-4 h-4 text-amber-400" />
+                                </div>
+                                <div className="flex-1">
+                                    <div className="text-[10px] font-bold text-amber-400 mb-1 uppercase tracking-wider">
+                                        Historical Risk Analysis
+                                    </div>
+                                    <div className="text-xs text-gray-300 leading-relaxed whitespace-pre-line max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-amber-500/20">
+                                        {riskSummary}
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+
 
 
                     {/* Featured Cities List */}

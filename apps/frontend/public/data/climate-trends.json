@@ -1,0 +1,148 @@
+{
+  "floodFrequencyByDecade": [
+    {
+      "decade": "1950s",
+      "events": 3,
+      "avgAffected": 5600000,
+      "totalCasualties": 3029,
+      "avgEconomicLoss": 0.4
+    },
+    {
+      "decade": "1960s",
+      "events": 2,
+      "avgAffected": 1800000,
+      "totalCasualties": 350,
+      "avgEconomicLoss": 0.3
+    },
+    {
+      "decade": "1970s",
+      "events": 6,
+      "avgAffected": 7200000,
+      "totalCasualties": 1750,
+      "avgEconomicLoss": 2.8
+    },
+    {
+      "decade": "1980s",
+      "events": 8,
+      "avgAffected": 3500000,
+      "totalCasualties": 2100,
+      "avgEconomicLoss": 1.2
+    },
+    {
+      "decade": "1990s",
+      "events": 8,
+      "avgAffected": 2800000,
+      "totalCasualties": 1600,
+      "avgEconomicLoss": 2.5
+    },
+    {
+      "decade": "2000s",
+      "events": 10,
+      "avgAffected": 1500000,
+      "totalCasualties": 850,
+      "avgEconomicLoss": 0.8
+    },
+    {
+      "decade": "2010s",
+      "events": 10,
+      "avgAffected": 6500000,
+      "totalCasualties": 1250,
+      "avgEconomicLoss": 4.2
+    },
+    {
+      "decade": "2020s",
+      "events": 5,
+      "avgAffected": 8200000,
+      "totalCasualties": 665,
+      "avgEconomicLoss": 7.1
+    }
+  ],
+  "economicImpactTrend": [
+    {
+      "period": "1950-1970",
+      "totalLoss": 6.2,
+      "notes": "USD billions"
+    },
+    {
+      "period": "1971-1990",
+      "totalLoss": 12.4,
+      "notes": "USD billions"
+    },
+    {
+      "period": "1991-2010",
+      "totalLoss": 25.8,
+      "notes": "USD billions"
+    },
+    {
+      "period": "2011-2025",
+      "totalLoss": 52.5,
+      "notes": "USD billions"
+    }
+  ],
+  "severityIncrease": {
+    "megaFloodsBefore2000": 2,
+    "megaFloodsAfter2000": 8,
+    "megaFloodsList": [
+      {
+        "year": 2010,
+        "affected": 20185000,
+        "deaths": 1985,
+        "economicLoss": 10.056
+      },
+      {
+        "year": 2011,
+        "affected": 9200000,
+        "deaths": 520,
+        "economicLoss": 3.73
+      },
+      {
+        "year": 2012,
+        "affected": 4849841,
+        "deaths": 571,
+        "economicLoss": 2.64
+      },
+      {
+        "year": 2013,
+        "affected": 1489260,
+        "deaths": 333,
+        "economicLoss": 2.0
+      },
+      {
+        "year": 2014,
+        "affected": 2600555,
+        "deaths": 367,
+        "economicLoss": 0.44
+      },
+      {
+        "year": 2022,
+        "affected": 33000000,
+        "deaths": 1739,
+        "economicLoss": 30.1
+      },
+      {
+        "year": 2023,
+        "affected": 1620000,
+        "deaths": 226,
+        "economicLoss": 1.5
+      },
+      {
+        "year": 2024,
+        "affected": 2600000,
+        "deaths": 354,
+        "economicLoss": 3.8
+      }
+    ],
+    "avgDecadalCasualties": {
+      "1950-1980": 1693,
+      "1980-2000": 1850,
+      "2000-2020": 1042,
+      "2020-2025": 773
+    }
+  },
+  "climateChangeIndicators": {
+    "rainfallIncreasePercentage": 60,
+    "glacialMeltAcceleration": 2.5,
+    "floodFrequencyIncrease": 4,
+    "urbanFloodingRisk": "Very High"
+  }
+}

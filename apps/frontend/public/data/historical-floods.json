@@ -1,0 +1,199 @@
+[
+  {
+    "year": 1950,
+    "severity": "Major",
+    "affected": 10000000,
+    "casualties": 2190,
+    "economicLoss": 0.488,
+    "provinces": [
+      "Punjab",
+      "Sindh"
+    ],
+    "description": "Severe flooding in Punjab and Sindh, over 100,000 homes destroyed"
+  },
+  {
+    "year": 1955,
+    "severity": "Major",
+    "affected": 6945000,
+    "casualties": 679,
+    "economicLoss": 0.378,
+    "provinces": [
+      "Punjab",
+      "Sindh"
+    ],
+    "description": "Widespread flooding across river systems, heavy damage in Ravi basin"
+  },
+  {
+    "year": 1973,
+    "severity": "Major",
+    "affected": 9719000,
+    "casualties": 474,
+    "economicLoss": 5.134,
+    "provinces": [
+      "Punjab",
+      "Sindh",
+      "KP"
+    ],
+    "description": "One of most severe floods in history, 8 million shelterless in Punjab"
+  },
+  {
+    "year": 1976,
+    "severity": "Mega",
+    "affected": 18390000,
+    "casualties": 425,
+    "economicLoss": 3.485,
+    "provinces": [
+      "Punjab",
+      "Sindh",
+      "Balochistan"
+    ],
+    "description": "Catastrophic flooding, 11,013 villages affected, worst pre-2000 floods"
+  },
+  {
+    "year": 1988,
+    "severity": "Major",
+    "affected": 2881300,
+    "casualties": 508,
+    "economicLoss": 0.858,
+    "provinces": [
+      "Punjab",
+      "Sindh"
+    ],
+    "description": "4,035 villages affected, 315,000+ homes damaged"
+  },
+  {
+    "year": 1992,
+    "severity": "Major",
+    "affected": 4121010,
+    "casualties": 435,
+    "economicLoss": 3.010,
+    "provinces": [
+      "Punjab",
+      "Sindh",
+      "KP"
+    ],
+    "description": "Record flood levels at major barrages, 7,435 villages impacted"
+  },
+  {
+    "year": 2010,
+    "severity": "Mega",
+    "affected": 20185000,
+    "casualties": 1985,
+    "economicLoss": 10.056,
+    "provinces": [
+      "Punjab",
+      "Sindh",
+      "KP",
+      "Balochistan"
+    ],
+    "description": "Catastrophic floods affecting one-fifth of Pakistan, 1.6M homes destroyed"
+  },
+  {
+    "year": 2011,
+    "severity": "Major",
+    "affected": 9200000,
+    "casualties": 520,
+    "economicLoss": 3.73,
+    "provinces": [
+      "Sindh",
+      "Balochistan",
+      "Punjab"
+    ],
+    "description": "Consecutive year flooding in Sindh and Balochistan"
+  },
+  {
+    "year": 2012,
+    "severity": "Major",
+    "affected": 4849841,
+    "casualties": 571,
+    "economicLoss": 2.64,
+    "provinces": [
+      "Punjab",
+      "Sindh",
+      "Balochistan"
+    ],
+    "description": "Punjab, Sindh and Balochistan heavily affected, 14,159 villages impacted"
+  },
+  {
+    "year": 2013,
+    "severity": "Major",
+    "affected": 1489260,
+    "casualties": 333,
+    "economicLoss": 2.0,
+    "provinces": [
+      "Punjab",
+      "Sindh",
+      "KP"
+    ],
+    "description": "8,297 villages affected across multiple provinces"
+  },
+  {
+    "year": 2014,
+    "severity": "Major",
+    "affected": 2600555,
+    "casualties": 367,
+    "economicLoss": 0.44,
+    "provinces": [
+      "Punjab",
+      "KP",
+      "GB",
+      "AJK"
+    ],
+    "description": "Kashmir and northern areas severely hit, late monsoon floods"
+  },
+  {
+    "year": 2015,
+    "severity": "Moderate",
+    "affected": 1933435,
+    "casualties": 238,
+    "economicLoss": 0.17,
+    "provinces": [
+      "Punjab",
+      "KP",
+      "Sindh"
+    ],
+    "description": "Flash floods in Chitral Valley and GLOFs in northern regions"
+  },
+  {
+    "year": 2022,
+    "severity": "Mega",
+    "affected": 33000000,
+    "casualties": 1739,
+    "economicLoss": 30.1,
+    "provinces": [
+      "Sindh",
+      "Balochistan",
+      "Punjab",
+      "KP"
+    ],
+    "description": "Catastrophic pluvial floods - worst in history, 33M affected"
+  },
+  {
+    "year": 2023,
+    "severity": "Moderate",
+    "affected": 1620000,
+    "casualties": 226,
+    "economicLoss": 1.5,
+    "provinces": [
+      "Punjab",
+      "KP",
+      "Sindh",
+      "Balochistan"
+    ],
+    "description": "Sutlej River flooding, 162,257 displaced, 90 villages affected"
+  },
+  {
+    "year": 2024,
+    "severity": "Major",
+    "affected": 2600000,
+    "casualties": 354,
+    "economicLoss": 3.8,
+    "provinces": [
+      "Sindh",
+      "Balochistan",
+      "Punjab",
+      "KP"
+    ],
+    "description": "Severe monsoon flooding, 56,543 houses damaged"
+  }
+]

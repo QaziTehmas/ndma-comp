@@ -80,6 +80,30 @@ export const loadClimateData = async () => {
 };
 
 /**
+ * Load historical floods data (1950-2025)
+ * @returns {Promise<Object>} Historical floods data
+ */
+export const loadHistoricalFloods = async () => {
+  return await fetchJSON('historical-floods.json');
+};
+
+/**
+ * Load provincial impacts summary
+ * @returns {Promise<Object>} Provincial impacts data
+ */
+export const loadProvincialImpacts = async () => {
+  return await fetchJSON('provincial-impacts.json');
+};
+
+/**
+ * Load climate trends and frequency data
+ * @returns {Promise<Object>} Climate trends data
+ */
+export const loadClimateTrends = async () => {
+  return await fetchJSON('climate-trends.json');
+};
+
+/**
  * Load NDMA vulnerability and alert data
  * @returns {Promise<Object>} NDMA data
  */
@@ -139,5 +163,8 @@ export default {
   loadEmergencyContacts,
   loadClimateData,
   loadNDMAData,
+  loadHistoricalFloods,
+  loadProvincialImpacts,
+  loadClimateTrends,
   loadAllData
 };

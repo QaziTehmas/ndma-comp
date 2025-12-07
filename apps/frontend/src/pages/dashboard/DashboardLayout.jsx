@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { clsx } from 'clsx';
+import ChatBot from '../../components/ChatBot';
 
 const DashboardLayout = () => {
   const location = useLocation();
@@ -101,6 +102,8 @@ const DashboardLayout = () => {
         </motion.div>
       </main>
 
+      {/* AI Chatbot */}
+      <ChatBot />
     </div>
   );
 };
