@@ -100,6 +100,7 @@ const DashboardLayout = () => {
           <Outlet />
         </motion.div>
       </main>
+
     </div>
   );
 };

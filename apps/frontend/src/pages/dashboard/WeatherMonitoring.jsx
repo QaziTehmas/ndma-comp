@@ -9,6 +9,7 @@ import { useAirQuality } from '../../hooks/useAirQuality';
 import { fetchMultipleCities } from '../../services/weatherService';
 import { PAKISTAN_CITIES, PAKISTAN_BOUNDS } from '../../data/pakistanCities';
 import { motion, AnimatePresence } from 'framer-motion';
+import DownloadReportButton from '../../components/DownloadReportButton';
 
 /**
  * WeatherMonitoring - Professional Dashboard with Advanced Animations
@@ -21,7 +22,7 @@ const WeatherMonitoring = () => {
   });
 
   const [citiesWeather, setCitiesWeather] = useState([]);
-  const [chartsVisible, setChartsVisible] = useState(true);
+  const [chartsVisible, setChartsVisible] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // For mobile responsiveness if needed
 
   // Custom hooks for data
@@ -154,6 +155,15 @@ const WeatherMonitoring = () => {
           />
         </main>
       </div>
+
+
+      {/* Download Button with Context */}
+      <DownloadReportButton
+        selectedLocation={selectedLocation}
+        weatherData={weatherData}
+        seismicData={earthquakeSummary}
+        airQuality={airQuality}
+      />
     </div>
   );
 };

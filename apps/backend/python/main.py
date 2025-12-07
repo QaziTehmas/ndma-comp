@@ -9,11 +9,13 @@ import sklearn_patches  # This applies all compatibility fixes
 # ============================================================
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import Optional
 from services.scraper import get_flood_data
 from services.prediction_service import get_prediction_service
 from services.weather_service import get_weather_service
+# from services.pdf_generator import generate_pdf_report
 import uvicorn
 
 app = FastAPI(title="FloodWatch API", description="Backend for scraping river level data and flood prediction")
@@ -47,6 +49,34 @@ def read_flood_data():
     Cached for 1 hour. Scrapes PDF if cache is old.
     """
     return get_flood_data()
+
+
+# from pdf repo
+
+# @app.get("/api/generate-report")
+# def generate_report():
+#     """
+#     Generate comprehensive PDF report with all flood/weather data.
+#     Returns PDF file for download.
+#     """
+#     # Get latest flood data
+#     flood_data = get_flood_data()
+#     
+#     # Generate PDF
+#     pdf_buffer = generate_pdf_report(flood_data)
+#     
+#     # Return as downloadable file
+#     from datetime import datetime
+#     filename = f"NDMA_Alert_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+#     
+#     return StreamingResponse(
+#         pdf_buffer,
+#         media_type="application/pdf",
+#         headers={
+#             "Content-Disposition": f"attachment; filename={filename}"
+#         }
+#     )
+
 
 @app.get("/api/model-status")
 def get_model_status():
