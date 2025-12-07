@@ -5,10 +5,10 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    proxy: {
+      proxy: {
       // Proxy /api requests to local backend to avoid CORS in development
       "/api": {
-        target: "http://localhost:5000",
+        target: "http://localhost:8000",
         changeOrigin: true,
         secure: false,
         // preserve path (no rewrite)

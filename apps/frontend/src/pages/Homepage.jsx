@@ -153,9 +153,9 @@ const HomePage = () => {
           </motion.div>
         </div>
 
-        {/* Stats Section */}
+        Stats Section
 
-        <div className="pt-20 px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* <div className="pt-20 px-4 sm:px-6 lg:px-8 relative z-10">
 
           <div className="max-w-7xl mx-auto px-7">
             <motion.div
@@ -191,7 +191,7 @@ const HomePage = () => {
               />
             </motion.div>
           </div>
-        </div>
+        </div> */}
       </section>
 
       {/* Features Grid */}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Activity, Mail, Phone, MapPin, Github, Linkedin, Twitter, Facebook } from 'lucide-react';
+import { Activity, Mail, Phone, MapPin, Github, Linkedin, Twitter, Facebook, Instagram } from 'lucide-react';
 import './Footer.css';
 
 const Footer = () => {
@@ -26,15 +26,14 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { icon: <Github className="w-5 h-5" />, url: '#', label: 'GitHub' },
-    { icon: <Linkedin className="w-5 h-5" />, url: '#', label: 'LinkedIn' },
-    { icon: <Twitter className="w-5 h-5" />, url: '#', label: 'Twitter' },
-    { icon: <Facebook className="w-5 h-5" />, url: '#', label: 'Facebook' },
+    { icon: <Github className="w-5 h-5" />, url: 'https://github.com/AbdurRahmanCodes', label: 'GitHub' },
+    { icon: <Linkedin className="w-5 h-5" />, url: 'https://www.linkedin.com/in/abdur-rahmanml/', label: 'LinkedIn' },
+    { icon: <Instagram className="w-5 h-5"/>, url: 'https://www.instagram.com/abdulrahman._.mani/', label: 'Instagram'}
   ];
 
   const contactInfo = [
-    { icon: <Mail className="w-4 h-4" />, text: 'contact@pdme.pk' },
-    { icon: <Phone className="w-4 h-4" />, text: '+92 (0) 51 1234567' },
+    { icon: <Mail className="w-4 h-4" />, text: 'techxonomy.services@gmail.com' },
+    { icon: <Phone className="w-4 h-4" />, text: '+92 333 4374533' },
     { icon: <MapPin className="w-4 h-4" />, text: 'Islamabad, Pakistan' },
   ];
 
@@ -134,7 +133,7 @@ const Footer = () => {
         <div className="footer-bottom">
           <div className="footer-bottom-content">
             <p className="copyright">
-              © {currentYear} PDME. All rights reserved.
+              © {currentYear} Techxonomy. All rights reserved.
             </p>
             <div className="footer-bottom-links">
               <a href="#" className="bottom-link">Privacy Policy</a>
@@ -144,7 +143,7 @@ const Footer = () => {
               <a href="#" className="bottom-link">Cookie Policy</a>
             </div>
             <p className="made-by">
-              Built with ❤️ by TechXonomy
+              Built by TechXonomy
             </p>
           </div>
         </div>

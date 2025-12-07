@@ -1,80 +1,168 @@
-import React from 'react';
-import { Code, Brain, Database, Cpu, Github, Linkedin, Mail, Layout, Palette, BarChart3, Map, Server, Wrench } from 'lucide-react';
-import { motion } from 'framer-motion';
-import './AboutUs.css';
+import React from "react";
+import {
+  Code,
+  Brain,
+  Database,
+  Cpu,
+  Github,
+  Linkedin,
+  Mail,
+  Layout,
+  Palette,
+  BarChart3,
+  Map,
+  Server,
+  Wrench,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import "./AboutUs.css";
 
 const AboutUs = () => {
   const team = [
     {
-      name: 'Muhammad Zain Nasir',
-      role: 'Full Stack Web Developer',
+      name: "Muhammad Zain Nasir",
+      role: "Full Stack Web Developer",
       icon: <Code className="w-6 h-6" />,
-      color: 'blue',
+      color: "blue",
+      image: "/public/team/mzain.jpg",
+      socials: {
+        github: "https://github.com/mzainnasir010",
+        linkedin: "https://www.linkedin.com/in/muhammad-zain-nasir-811303365",
+        email: "zainnasir6921@gmail.com",
+      },
     },
     {
-      name: 'Muhammad Ahsan Aftab',
-      role: 'AI Engineer',
+      name: "Muhammad Ahsan Aftab",
+      role: "AI Engineer",
       icon: <Brain className="w-6 h-6" />,
-      color: 'purple',
+      color: "purple",
+      socials: {
+        image: "/public/team/mahsan.jpg",
+        github: "https://github.com/mzainnasir010",
+        linkedin: "",
+        email: "",
+      },
     },
     {
-      name: 'Abdul Moeez',
-      role: 'Full Stack Web Developer',
+      name: "Abdul Moeez",
+      role: "Full Stack Web Developer",
       icon: <Code className="w-6 h-6" />,
-      color: 'green',
+      color: "green",
+      image: "/public/team/mmoeez.jpeg",
+      socials: {
+        github: "https://github.com/LuizSuarez",
+        linkedin: "https://www.linkedin.com/in/abdul-moeez-025417365?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+        email: "abdul.moeezx9@gmail.com",
+      },
     },
     {
-      name: 'Abdur Rehman',
-      role: 'Data Scientist',
+      name: "Abdur Rahman",
+      role: "Data Scientist",
       icon: <Database className="w-6 h-6" />,
-      color: 'orange',
+      color: "orange",
+      image: "/public/team/mrahman1.jpeg",
+      socials: {
+        github: "https://github.com/AbdurRahmanCodes",
+        linkedin: "https://www.linkedin.com/in/abdur-rahmanml/",
+        email: "abdurrahman82733@gmail.com",
+      },
     },
     {
-      name: 'Qazi Tehmas',
-      role: 'Full Stack Web Developer',
+      name: "Qazi Tehmas",
+      role: "Full Stack Web Developer",
       icon: <Code className="w-6 h-6" />,
-      color: 'cyan',
+      color: "cyan",
+      image: "/public/team/mtehmas.jpg",
+      socials: {
+        github: "https://github.com/QaziTehmas/",
+        linkedin: "https://www.linkedin.com/in/qazitehmas/",
+        email: "qazitehmas1012@gmail.com",
+      },
     },
     {
-      name: 'Ammar Manzoor',
-      role: 'AI Engineer',
+      name: "Ammar Manzoor",
+      role: "AI Engineer",
       icon: <Brain className="w-6 h-6" />,
-      color: 'pink',
+      color: "pink",
+      image: "/public/team/mammar.jpg",
+      socials: {
+        github: "",
+        linkedin: "",
+        email: "",
+      },
     },
     {
-      name: 'Affan Shafiq',
-      role: 'AI Engineer',
+      name: "Affan Shafiq",
+      role: "AI Engineer",
       icon: <Cpu className="w-6 h-6" />,
-      color: 'indigo',
+      color: "indigo",
+      image: "/public/team/maffan.jpg",
+      socials: {
+        github: "",
+        linkedin: "",
+        email: "",
+      },
     },
   ];
 
   const techStack = [
-    { name: 'React.js', category: 'Frontend', icon: <Layout className="w-5 h-5" /> },
-    { name: 'Tailwind CSS', category: 'Styling', icon: <Palette className="w-5 h-5" /> },
-    { name: 'Recharts', category: 'Visualization', icon: <BarChart3 className="w-5 h-5" /> },
-    { name: 'Leaflet.js', category: 'Mapping', icon: <Map className="w-5 h-5" /> },
-    { name: 'Python/Flask', category: 'Backend', icon: <Server className="w-5 h-5" /> },
-    { name: 'Machine Learning', category: 'AI/ML', icon: <Brain className="w-5 h-5" /> },
-    { name: 'PostgreSQL', category: 'Database', icon: <Database className="w-5 h-5" /> },
-    { name: 'Vite', category: 'Build Tool', icon: <Wrench className="w-5 h-5" /> },
+    {
+      name: "React.js",
+      category: "Frontend",
+      icon: <Layout className="w-5 h-5" />,
+    },
+    {
+      name: "Tailwind CSS",
+      category: "Styling",
+      icon: <Palette className="w-5 h-5" />,
+    },
+    {
+      name: "Recharts",
+      category: "Visualization",
+      icon: <BarChart3 className="w-5 h-5" />,
+    },
+    {
+      name: "Leaflet.js",
+      category: "Mapping",
+      icon: <Map className="w-5 h-5" />,
+    },
+    {
+      name: "Python/Flask",
+      category: "Backend",
+      icon: <Server className="w-5 h-5" />,
+    },
+    {
+      name: "Machine Learning",
+      category: "AI/ML",
+      icon: <Brain className="w-5 h-5" />,
+    },
+    {
+      name: "PostgreSQL",
+      category: "Database",
+      icon: <Database className="w-5 h-5" />,
+    },
+    {
+      name: "Vite",
+      category: "Build Tool",
+      icon: <Wrench className="w-5 h-5" />,
+    },
   ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
 
   return (
     <div className="about-page">
       <div className="about-container">
         {/* Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="about-header"
@@ -83,32 +171,33 @@ const AboutUs = () => {
             About <span className="text-primary">TechXonomy</span>
           </h1>
           <p className="about-subtitle">
-            A team of passionate developers and engineers building innovative solutions for
-            disaster management in Pakistan.
+            A team of passionate developers and engineers building innovative
+            solutions for disaster management in Pakistan.
           </p>
         </motion.div>
 
         {/* Mission Statement */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           className="mission-card"
         >
           <div className="mission-glow" />
-          
+
           <h2 className="section-title">Our Mission</h2>
           <div className="mission-content">
             <div>
               <p className="mission-text">
-                The Pakistan Disaster Management Ecosystem (PDME) is our contribution to making
-                Pakistan more resilient against natural disasters. We believe that technology,
-                when combined with accurate data and intelligent analysis, can save lives.
+                The Pakistan Disaster Management Ecosystem (PDME) is our
+                contribution to making Pakistan more resilient against natural
+                disasters. We believe that technology, when combined with
+                accurate data and intelligent analysis, can save lives.
               </p>
               <p className="mission-text">
-                Our platform integrates decades of historical disaster data, real-time monitoring,
-                climate analytics, and AI-powered predictions to provide authorities with
-                actionable intelligence.
+                Our platform integrates decades of historical disaster data,
+                real-time monitoring, climate analytics, and AI-powered
+                predictions to provide authorities with actionable intelligence.
               </p>
             </div>
             <div className="stats-grid">
@@ -135,7 +224,7 @@ const AboutUs = () => {
         {/* Team Section */}
         <div className="team-section">
           <h2 className="section-title">Meet Our Team</h2>
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -149,18 +238,36 @@ const AboutUs = () => {
                 whileHover={{ y: -10 }}
                 className="team-card"
               >
-                <div className={`team-icon-wrapper bg-${member.color}-500/20`}>
-                  <div className={`team-icon text-${member.color}-400`}>{member.icon}</div>
+                <div className="team-image-wrapper">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="team-image"
+                  />
                 </div>
-                <h3 className="team-name">
-                  {member.name}
-                </h3>
+                <h3 className="team-name">{member.name}</h3>
                 <p className="team-role">{member.role}</p>
-                
+
                 <div className="team-socials">
-                  <Github className="social-icon" />
-                  <Linkedin className="social-icon" />
-                  <Mail className="social-icon" />
+                  <a
+                    href={member.socials.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Github className="social-icon" />
+                  </a>
+
+                  <a
+                    href={member.socials.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Linkedin className="social-icon" />
+                  </a>
+
+                  <a href={`mailto:${member.socials.email}`}>
+                    <Mail className="social-icon" />
+                  </a>
                 </div>
               </motion.div>
             ))}
@@ -169,9 +276,7 @@ const AboutUs = () => {
 
         {/* Tech Stack */}
         <div className="tech-stack-section">
-          <h2 className="section-title">
-            Technology Stack
-          </h2>
+          <h2 className="section-title">Technology Stack</h2>
 
           <div className="tech-grid">
             {techStack.map((tech, index) => (
@@ -180,28 +285,17 @@ const AboutUs = () => {
                 whileHover={{ scale: 1.05 }}
                 className="tech-card"
               >
-                <div className="tech-icon">
-                  {tech.icon}
-                </div>
+                <div className="tech-icon">{tech.icon}</div>
 
-                <div className="tech-name">
-                  {tech.name}
-                </div>
+                <div className="tech-name">{tech.name}</div>
 
-                <div className="tech-category">
-                  {tech.category}
-                </div>
+                <div className="tech-category">{tech.category}</div>
               </motion.div>
             ))}
           </div>
         </div>
 
         {/* Footer */}
-        <div className="about-footer">
-          <p className="footer-text">
-            Built with ❤️ by TechXonomy for a safer Pakistan
-          </p>
-        </div>
       </div>
     </div>
   );
