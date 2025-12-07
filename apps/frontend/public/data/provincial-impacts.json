@@ -1,0 +1,84 @@
+[
+  {
+    "province": "Punjab",
+    "totalEvents": 28,
+    "totalAffected": 45000000,
+    "totalCasualties": 4200,
+    "economicLoss": 18.5,
+    "highRiskDistricts": [
+      "Lahore",
+      "Gujranwala",
+      "Dera Ghazi Khan",
+      "Rajanpur"
+    ],
+    "riskLevel": "High"
+  },
+  {
+    "province": "Sindh",
+    "totalEvents": 32,
+    "totalAffected": 52000000,
+    "totalCasualties": 3800,
+    "economicLoss": 25.3,
+    "highRiskDistricts": [
+      "Karachi",
+      "Hyderabad",
+      "Jacobabad",
+      "Dadu"
+    ],
+    "riskLevel": "Very High"
+  },
+  {
+    "province": "KP",
+    "totalEvents": 24,
+    "totalAffected": 18000000,
+    "totalCasualties": 2100,
+    "economicLoss": 8.2,
+    "highRiskDistricts": [
+      "Peshawar",
+      "Charsadda",
+      "Nowshera",
+      "Swat"
+    ],
+    "riskLevel": "High"
+  },
+  {
+    "province": "Balochistan",
+    "totalEvents": 18,
+    "totalAffected": 12000000,
+    "totalCasualties": 1500,
+    "economicLoss": 6.8,
+    "highRiskDistricts": [
+      "Jaffarabad",
+      "Naseerabad",
+      "Sibi",
+      "Kachhi"
+    ],
+    "riskLevel": "Medium"
+  },
+  {
+    "province": "GB",
+    "totalEvents": 12,
+    "totalAffected": 800000,
+    "totalCasualties": 320,
+    "economicLoss": 1.2,
+    "highRiskDistricts": [
+      "Gilgit",
+      "Hunza",
+      "Ghizer"
+    ],
+    "riskLevel": "High (GLOFs)"
+  },
+  {
+    "province": "AJK",
+    "totalEvents": 10,
+    "totalAffected": 600000,
+    "totalCasualties": 280,
+    "economicLoss": 0.9,
+    "highRiskDistricts": [
+      "Muzaffarabad",
+      "Neelum",
+      "Poonch"
+    ],
+    "riskLevel": "Medium"
+  }
+]

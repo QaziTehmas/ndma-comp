@@ -15,8 +15,12 @@ from typing import Optional
 from services.scraper import get_flood_data
 from services.prediction_service import get_prediction_service
 from services.weather_service import get_weather_service
-# from services.pdf_generator import generate_pdf_report
 import uvicorn
+from dotenv import load_dotenv
+import os
+from services.chat_engine import chat_engine
+
+load_dotenv()
 
 app = FastAPI(title="FloodWatch API", description="Backend for scraping river level data and flood prediction")
 
@@ -52,6 +56,22 @@ def read_flood_data():
 
 
 # from pdf repo
+
+@app.get("/api/chat")
+def chat(query: str):
+    """
+    AI Analyst: Searches historical database for query.
+    """
+    response = chat_engine.ask(query)
+    return {"response": response}
+
+@app.get("/api/history-risk")
+def history_risk(location: str):
+    """
+    Returns historical risk context for a location.
+    """
+    risk_summary = chat_engine.get_location_summary(location)
+    return {"risk_analysis": risk_summary}
 
 # @app.get("/api/generate-report")
 # def generate_report():

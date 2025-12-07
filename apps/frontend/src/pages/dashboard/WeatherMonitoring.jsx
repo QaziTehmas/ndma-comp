@@ -44,6 +44,24 @@ const WeatherMonitoring = () => {
     loading: airQualityLoading
   } = useAirQuality(selectedLocation.latitude, selectedLocation.longitude);
 
+  const [riskSummary, setRiskSummary] = useState(null);
+
+  useEffect(() => {
+    const fetchRisk = async () => {
+      if (!selectedLocation.name) return;
+      try {
+        setRiskSummary(null); // Reset
+        const response = await fetch(`http://localhost:8000/api/history-risk?location=${encodeURIComponent(selectedLocation.name)}`);
+        const data = await response.json();
+        setRiskSummary(data.risk_analysis);
+      } catch (e) {
+        console.error("Risk fetch error", e);
+      }
+    };
+    fetchRisk();
+  }, [selectedLocation.name]);
+
+
   // Fetch weather for major cities
   useEffect(() => {
     const fetchCitiesData = async () => {
@@ -121,6 +139,7 @@ const WeatherMonitoring = () => {
             citiesWeather={citiesWeather}
             earthquakeSummary={earthquakeSummary}
             airQuality={airQuality}
+            riskSummary={riskSummary}
             onLocationSelect={handleLocationSelect}
             onCitySelect={handleLocationSelect}
             loading={weatherLoading || earthquakeLoading || airQualityLoading}
