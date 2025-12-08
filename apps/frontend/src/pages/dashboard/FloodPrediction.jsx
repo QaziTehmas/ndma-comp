@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
+  AreaChart,
+  Area,
   BarChart,
   Bar,
   XAxis,
@@ -11,6 +13,7 @@ import {
   LineChart,
   Line,
 } from 'recharts';
+import { motion } from 'framer-motion';
 import { ChartContainer, RiskMeter } from '../../components/UI';
 import { useMultipleData } from '../../hooks/useData';
 import { loadFloodHistory, loadNDMAData } from '../../services/dataLoader';
@@ -504,9 +507,9 @@ const FloodPrediction = () => {
       {/* Charts Section */}
       {predictionResult && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Contributing Factors */}
+          {/* Contributing Factors (Dynamic) */}
           {factorsData.length > 0 && (
-            <ChartContainer title="Contributing Risk Factors">
+            <ChartContainer title="Dynamic Risk Factors Breakdown">
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={factorsData} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
@@ -543,6 +546,131 @@ const FloodPrediction = () => {
           )}
         </div>
       )}
+
+      {/* Static Filler Content Section */}
+      <div className="space-y-6 pt-8 border-t border-white/10 mt-8">
+        <h2 className="text-2xl font-bold text-white mb-6">Regional Analysis & Guidelines</h2>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Seasonal Flood Trends */}
+          <ChartContainer title="Seasonal Flood Risk Trends">
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={[
+                { month: 'Jan', risk: 10 }, { month: 'Feb', risk: 15 },
+                { month: 'Mar', risk: 25 }, { month: 'Apr', risk: 30 },
+                { month: 'May', risk: 25 }, { month: 'Jun', risk: 45 },
+                { month: 'Jul', risk: 85 }, { month: 'Aug', risk: 95 },
+                { month: 'Sep', risk: 65 }, { month: 'Oct', risk: 25 },
+                { month: 'Nov', risk: 15 }, { month: 'Dec', risk: 10 },
+              ]}>
+                <defs>
+                  <linearGradient id="colorFloodRisk" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                <XAxis dataKey="month" stroke="#94a3b8" axisLine={false} tickLine={false} />
+                <YAxis stroke="#94a3b8" axisLine={false} tickLine={false} />
+                <Tooltip
+                  contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '8px' }}
+                  labelStyle={{ color: '#f1f5f9' }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="risk"
+                  stroke="#3B82F6"
+                  strokeWidth={3}
+                  fillOpacity={1}
+                  fill="url(#colorFloodRisk)"
+                  name="Risk Level"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+
+          {/* Contributing Risk Factors (Horizontal Bar Chart) */}
+          <ChartContainer title="Primary Flood Drivers">
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={[
+                { factor: 'Monsoon Rain', value: 90 },
+                { factor: 'Glacial Melt', value: 75 },
+                { factor: 'River Overflow', value: 65 },
+                { factor: 'Urban Drainage', value: 50 },
+                { factor: 'Deforestation', value: 40 },
+              ]} layout="vertical" margin={{ left: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" horizontal={false} />
+                <XAxis type="number" stroke="#94a3b8" hide />
+                <YAxis dataKey="factor" type="category" stroke="#94a3b8" width={100} tick={{ fontSize: 12 }} />
+                <Tooltip
+                  cursor={{ fill: 'transparent' }}
+                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155' }}
+                  labelStyle={{ color: '#f1f5f9' }}
+                />
+                <Bar dataKey="value" fill="#60A5FA" radius={[0, 4, 4, 0]} barSize={20}>
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* High Risk Areas */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-background-light/50 backdrop-blur-md rounded-xl p-6 border border-white/5 shadow-glass"
+          >
+            <h3 className="text-xl font-bold font-heading text-white mb-4">High Vulnerability Zones</h3>
+            <div className="space-y-3">
+              {[
+                { name: 'Khyber Pakhtunkhwa', districts: 14, risk: 'High', color: 'text-risk-critical border-risk-critical/20 bg-risk-critical/10' },
+                { name: 'Sindh (Southern)', districts: 11, risk: 'High', color: 'text-risk-critical border-risk-critical/20 bg-risk-critical/10' },
+                { name: 'Punjab (Riverine)', districts: 18, risk: 'Medium', color: 'text-risk-high border-risk-high/20 bg-risk-high/10' },
+                { name: 'Balochistan', districts: 9, risk: 'Medium', color: 'text-risk-high border-risk-high/20 bg-risk-high/10' }
+              ].map((area, index) => (
+                <div key={index} className="flex items-center justify-between p-4 bg-background/50 rounded-lg border border-white/5 hover:border-white/10 transition-colors">
+                  <div>
+                    <div className="font-semibold text-white">{area.name}</div>
+                    <div className="text-xs text-gray-400">Impacted Districts: {area.districts}</div>
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold border ${area.color}`}>
+                    {area.risk} Risk
+                  </span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Prevention Guidelines */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-background-light/50 backdrop-blur-md rounded-xl p-6 border border-white/5 shadow-glass"
+          >
+            <h3 className="text-xl font-bold font-heading text-white mb-4">Flood Safety Guidelines</h3>
+            <div className="space-y-4">
+              {[
+                { title: 'Emergency Kit', desc: 'Prepare food, water, and medical supplies for 72 hours.', icon: <span className="text-emerald-400">🛡️</span>, color: 'emerald' },
+                { title: 'Secure Property', desc: 'Elevate furniture and install sandbags at entry points.', icon: <span className="text-blue-400">🏠</span>, color: 'blue' },
+                { title: 'Evacuation Plan', desc: 'Identify higher ground and safe routes in your district.', icon: <span className="text-orange-400">🗺️</span>, color: 'orange' }
+              ].map((tip, index) => (
+                <div key={index} className="flex gap-4 p-4 bg-background/50 rounded-lg border border-white/5 hover:border-primary/30 transition-colors group">
+                  <div className={`flex-shrink-0 mt-1 p-2 rounded-lg bg-${tip.color}-500/10 group-hover:bg-${tip.color}-500/20 transition-colors`}>
+                    {tip.icon}
+                  </div>
+                  <div>
+                    <h4 className="font-bold font-heading text-white mb-1 group-hover:text-primary transition-colors">{tip.title}</h4>
+                    <p className="text-sm text-gray-400 font-body">{tip.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 };
