@@ -1,7 +1,7 @@
 """
 FloodWatch API Backend
-Main FastAPI application for flood prediction and related services.
-Uses CatBoost model with OpenMeteo weather data and district-based flood rate lookup.
+Main FastAPI application for flood prediction, fire risk prediction, and related services.
+Uses CatBoost/XGBoost models with OpenMeteo weather data.
 """
 
 from fastapi import FastAPI, HTTPException
@@ -13,6 +13,8 @@ from services.scraper import get_flood_data
 from services.prediction_service import get_prediction_service
 from services.weather_service import get_weather_service
 from services.flood_rate_service import get_flood_rate_service
+from services.fire_risk_service import get_fire_risk_service
+from services.fire_weather_service import get_fire_weather_service
 import uvicorn
 from dotenv import load_dotenv
 import os
@@ -20,7 +22,7 @@ from services.chat_engine import chat_engine
 
 load_dotenv()
 
-app = FastAPI(title="FloodWatch API", description="Backend for scraping river level data and flood prediction")
+app = FastAPI(title="PDME API", description="Backend for flood prediction, fire risk, and disaster management")
 
 # CORS - Allow Frontend to access
 app.add_middleware(
@@ -31,8 +33,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Simplified Pydantic model for flood prediction request
+# Pydantic models for requests
 class FloodPredictionRequest(BaseModel):
+    year: int
+    month: int
+    day: int
+    location: str
+    latitude: float
+    longitude: float
+
+class FirePredictionRequest(BaseModel):
     year: int
     month: int
     day: int
@@ -177,6 +187,91 @@ def predict_flood(request: FloodPredictionRequest):
         print(f"Exception in prediction: {error_msg}")
         print(traceback.format_exc())
         raise HTTPException(status_code=500, detail=error_msg)
+
+
+@app.post("/api/fire-prediction")
+def predict_fire(request: FirePredictionRequest):
+    """
+    Predict fire risk based on location and date.
+    
+    Process:
+    1. Fetch weather data from OpenMeteo API
+    2. Convert units (Celsius, km/h, mm -> Fahrenheit, mph, inches)
+    3. Perform feature engineering
+    4. Make prediction using XGBoost model
+    
+    Args:
+        request: Contains year, month, day, location, latitude, longitude
+        
+    Returns:
+        - probability: Fire risk probability (0-1)
+        - fire_risk: Boolean indicating high risk
+        - message: Human-readable risk level
+        - risk_percentage: Probability as percentage
+        - weather_data: The fetched weather data used for prediction
+    """
+    import traceback
+    
+    try:
+        # 1. Fetch weather data for fire prediction
+        fire_weather_service = get_fire_weather_service()
+        weather_data = fire_weather_service.fetch_fire_weather(
+            latitude=request.latitude,
+            longitude=request.longitude,
+            year=request.year,
+            month=request.month,
+            day=request.day
+        )
+        
+        # Add location name to weather data
+        weather_data["location"] = request.location
+        
+        # 2. Make prediction using fire risk service
+        fire_risk_service = get_fire_risk_service()
+        result = fire_risk_service.predict(weather_data)
+        
+        # 3. Include weather data in response for transparency
+        result["weather_data"] = weather_data
+        
+        return result
+        
+    except ValueError as e:
+        error_msg = str(e)
+        print(f"ValueError in fire prediction: {error_msg}")
+        raise HTTPException(status_code=400, detail=error_msg)
+    except FileNotFoundError as e:
+        error_msg = f"Fire model file not found: {str(e)}"
+        print(f"FileNotFoundError: {error_msg}")
+        raise HTTPException(status_code=500, detail=error_msg)
+    except Exception as e:
+        error_msg = f"Fire prediction error: {str(e)}"
+        print(f"Exception in fire prediction: {error_msg}")
+        print(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=error_msg)
+
+
+@app.get("/api/fire-model-status")
+def get_fire_model_status():
+    """Check if the fire risk model is loaded and ready."""
+    try:
+        fire_risk_service = get_fire_risk_service()
+        if fire_risk_service.model is None:
+            return {
+                "status": "error",
+                "message": "Fire risk model not loaded"
+            }
+        return {
+            "status": "ready",
+            "model_type": "XGBoost",
+            "features_count": len(fire_risk_service.features_list),
+            "message": "Fire risk model loaded and ready"
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e)
+        }
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
