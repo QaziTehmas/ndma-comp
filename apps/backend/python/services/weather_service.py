@@ -4,9 +4,10 @@ from typing import Dict, List, Optional
 import math
 
 class WeatherService:
-    """Service to fetch historical weather data from Open-Meteo API"""
+    """Service to fetch weather data from Open-Meteo API (historical and forecast)"""
     
-    BASE_URL = "https://archive-api.open-meteo.com/v1/archive"
+    ARCHIVE_URL = "https://archive-api.open-meteo.com/v1/archive"
+    FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
     
     def __init__(self):
         pass
@@ -14,7 +15,8 @@ class WeatherService:
     def fetch_historical_weather(self, latitude: float, longitude: float, 
                                   year: int, month: int, day: int) -> Dict:
         """
-        Fetch historical weather data for a specific date and calculate all required features.
+        Fetch weather data for a specific date and calculate all required features.
+        Uses archive API for past dates and forecast API for future dates.
         
         Args:
             latitude: Latitude of the location
@@ -28,25 +30,36 @@ class WeatherService:
         """
         target_date = datetime(year, month, day)
         today = datetime.now()
+        today_date = today.replace(hour=0, minute=0, second=0, microsecond=0)
         
-        # Check if date is in the future
-        if target_date > today:
-            raise ValueError(f"Date {target_date.strftime('%Y-%m-%d')} is in the future. Historical weather data is only available for past dates.")
+        # Determine if we're fetching historical or forecast data
+        is_future = target_date > today_date
         
-        # Open-Meteo archive API typically has data back to 1940, but let's check
-        if year < 1940:
+        # For historical data, check minimum year
+        if not is_future and year < 1940:
             raise ValueError(f"Year {year} is too early. Historical weather data is typically available from 1940 onwards.")
+        
+        # For forecast, Open-Meteo typically provides up to 16 days ahead
+        if is_future:
+            max_forecast_date = today_date + timedelta(days=16)
+            if target_date > max_forecast_date:
+                # For dates beyond forecast range, use seasonal averages based on historical data
+                print(f"Note: Date {target_date.strftime('%Y-%m-%d')} is beyond forecast range. Using seasonal estimates.")
         
         start_date = target_date - timedelta(days=7)  # Get 7 days before for averages
         
-        # Ensure start_date is not before 1940
-        earliest_date = datetime(1940, 1, 1)
-        if start_date < earliest_date:
-            start_date = earliest_date
-            print(f"Warning: Adjusted start_date to {earliest_date.strftime('%Y-%m-%d')} (earliest available data)")
+        # For future dates, adjust start_date to not go before today for forecast API
+        if is_future and start_date < today_date:
+            start_date = today_date
         
-        # Fetch weather data for the target date and 7 days before
-        # Open-Meteo API requires daily parameters as comma-separated string
+        # Ensure start_date is not before 1940 for historical
+        if not is_future:
+            earliest_date = datetime(1940, 1, 1)
+            if start_date < earliest_date:
+                start_date = earliest_date
+                print(f"Warning: Adjusted start_date to {earliest_date.strftime('%Y-%m-%d')} (earliest available data)")
+        
+        # Fetch weather data for the target date and days before
         daily_params = [
             "temperature_2m_max",
             "temperature_2m_min",
@@ -60,6 +73,12 @@ class WeatherService:
             "weather_code"
         ]
         
+        # Choose API based on date
+        if is_future:
+            api_url = self.FORECAST_URL
+        else:
+            api_url = self.ARCHIVE_URL
+        
         params = {
             "latitude": latitude,
             "longitude": longitude,
@@ -70,7 +89,7 @@ class WeatherService:
         }
         
         try:
-            response = requests.get(self.BASE_URL, params=params, timeout=30)
+            response = requests.get(api_url, params=params, timeout=30)
             
             if response.status_code == 400:
                 error_detail = response.text
@@ -156,6 +175,15 @@ class WeatherService:
             # Calculate day_of_year
             day_of_year = target_date.timetuple().tm_yday
             
+            # Calculate is_monsoon_season (monsoon months: June-September)
+            is_monsoon_season = 1 if month in [6, 7, 8, 9] else 0
+            
+            # Calculate is_peak_rainy (peak rainy months: July-September)
+            is_peak_rainy = 1 if month in [7, 8, 9] else 0
+            
+            # Calculate high_cumulative_precip (threshold ~100mm for 7-day cumulative)
+            high_cumulative_precip = 1 if precipitation_cumsum_7day > 100 else 0
+            
             return {
                 "year": year,
                 "month": month,
@@ -181,7 +209,10 @@ class WeatherService:
                 "temperature_mean_7day_avg": float(temperature_mean_7day_avg),
                 "precipitation_cumsum_7day": float(precipitation_cumsum_7day),
                 "season": season,
-                "day_of_year": int(day_of_year)
+                "day_of_year": int(day_of_year),
+                "is_monsoon_season": is_monsoon_season,
+                "is_peak_rainy": is_peak_rainy,
+                "high_cumulative_precip": high_cumulative_precip
             }
             
         except requests.exceptions.RequestException as e:

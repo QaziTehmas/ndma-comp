@@ -1,12 +1,9 @@
-# ============================================================
-# CRITICAL: Import sklearn patches BEFORE anything else
-# ============================================================
-# This MUST be the first import in the entire application
-import sklearn_patches  # This applies all compatibility fixes
+"""
+FloodWatch API Backend
+Main FastAPI application for flood prediction and related services.
+Uses CatBoost model with OpenMeteo weather data and district-based flood rate lookup.
+"""
 
-# ============================================================
-# Now import everything else
-# ============================================================
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -15,6 +12,7 @@ from typing import Optional
 from services.scraper import get_flood_data
 from services.prediction_service import get_prediction_service
 from services.weather_service import get_weather_service
+from services.flood_rate_service import get_flood_rate_service
 import uvicorn
 from dotenv import load_dotenv
 import os
@@ -27,7 +25,7 @@ app = FastAPI(title="FloodWatch API", description="Backend for scraping river le
 # CORS - Allow Frontend to access
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, verify specific origin
+    allow_origins=["*"],  # In production, verify specific origin
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -55,8 +53,6 @@ def read_flood_data():
     return get_flood_data()
 
 
-# from pdf repo
-
 @app.get("/api/chat")
 def chat(query: str):
     """
@@ -81,30 +77,6 @@ def history_risk(location: str):
     risk_summary = chat_engine.get_location_summary(location)
     return {"risk_analysis": risk_summary}
 
-# @app.get("/api/generate-report")
-# def generate_report():
-#     """
-#     Generate comprehensive PDF report with all flood/weather data.
-#     Returns PDF file for download.
-#     """
-#     # Get latest flood data
-#     flood_data = get_flood_data()
-#     
-#     # Generate PDF
-#     pdf_buffer = generate_pdf_report(flood_data)
-#     
-#     # Return as downloadable file
-#     from datetime import datetime
-#     filename = f"NDMA_Alert_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
-#     
-#     return StreamingResponse(
-#         pdf_buffer,
-#         media_type="application/pdf",
-#         headers={
-#             "Content-Disposition": f"attachment; filename={filename}"
-#         }
-#     )
-
 
 @app.get("/api/model-status")
 def get_model_status():
@@ -124,20 +96,25 @@ def get_model_status():
             "model_type": str(type(model).__name__),
             "has_predict": hasattr(model, 'predict'),
             "has_predict_proba": hasattr(model, 'predict_proba'),
-            "message": "Model loaded and ready"
+            "selected_features_count": len(prediction_service.selected_features),
+            "message": "CatBoost model loaded and ready"
         }
     except Exception as e:
         return {
             "status": "error",
-            "message": str(e),
-            "hint": "Run 'python inspect_model.py' to check what's in the pickle file"
+            "message": str(e)
         }
 
 @app.post("/api/flood-prediction")
 def predict_flood(request: FloodPredictionRequest):
     """
     Predict flood probability based on location and date.
-    Automatically fetches historical weather data and calculates all required features.
+    
+    Process:
+    1. Fetch historical weather data from OpenMeteo API
+    2. Get location_flood_rate from flood_rate.json via reverse geocoding
+    3. Perform feature engineering
+    4. Make prediction using CatBoost model
     
     Args:
         request: Contains year, month, day, location, latitude, longitude
@@ -148,11 +125,12 @@ def predict_flood(request: FloodPredictionRequest):
         - prediction_label: Human-readable prediction
         - probability_percentage: Probability as percentage
         - weather_data: The fetched weather data used for prediction
+        - flood_rate_info: Location flood rate details
     """
     import traceback
     
     try:
-        # Fetch historical weather data for the given location and date
+        # 1. Fetch historical weather data for the given location and date
         weather_service = get_weather_service()
         weather_data = weather_service.fetch_historical_weather(
             latitude=request.latitude,
@@ -165,14 +143,27 @@ def predict_flood(request: FloodPredictionRequest):
         # Add location name to weather data
         weather_data["location"] = request.location
         
-        # Make prediction using the fetched weather data
+        # 2. Get location_flood_rate from flood_rate.json
+        flood_rate_service = get_flood_rate_service()
+        flood_rate_info = flood_rate_service.get_location_flood_rate(
+            latitude=request.latitude,
+            longitude=request.longitude,
+            location_name=request.location
+        )
+        
+        # Add location_flood_rate to weather_data for prediction
+        weather_data["location_flood_rate"] = flood_rate_info["location_flood_rate"]
+        
+        # 3. Make prediction using the fetched weather data
         prediction_service = get_prediction_service()
         result = prediction_service.predict(weather_data)
         
-        # Include weather data in response for transparency
+        # 4. Include weather data and flood rate info in response for transparency
         result["weather_data"] = weather_data
+        result["flood_rate_info"] = flood_rate_info
         
         return result
+        
     except ValueError as e:
         error_msg = str(e)
         print(f"ValueError in prediction: {error_msg}")

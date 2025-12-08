@@ -23,20 +23,20 @@ const FloodPrediction = () => {
   const [predictionResult, setPredictionResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   // Simplified form state - only location and date
   const [locationQuery, setLocationQuery] = useState('');
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [searchingLocation, setSearchingLocation] = useState(false);
-  
+
   // Initialize with yesterday's date to ensure we have historical data
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
   const [year, setYear] = useState(yesterday.getFullYear());
   const [month, setMonth] = useState(yesterday.getMonth() + 1);
   const [day, setDay] = useState(yesterday.getDate());
-  
+
   const searchTimeoutRef = useRef(null);
   const locationInputRef = useRef(null);
 
@@ -73,7 +73,7 @@ const FloodPrediction = () => {
         ]);
 
         const suggestions = [];
-        
+
         if (citiesResult.status === 'fulfilled' && citiesResult.value) {
           suggestions.push(...citiesResult.value.map(city => ({
             name: city.name,
@@ -82,14 +82,14 @@ const FloodPrediction = () => {
             region: city.region || city.country
           })));
         }
-        
+
         if (locationResult.status === 'fulfilled' && locationResult.value) {
           suggestions.push(...locationResult.value);
         }
 
         // Remove duplicates
         const uniqueSuggestions = suggestions.filter((item, index, self) =>
-          index === self.findIndex((t) => 
+          index === self.findIndex((t) =>
             Math.abs(t.latitude - item.latitude) < 0.001 &&
             Math.abs(t.longitude - item.longitude) < 0.001
           )
@@ -118,28 +118,14 @@ const FloodPrediction = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!selectedLocation) {
       setError('Please select a location from the suggestions');
       return;
     }
 
-    // Validate date is not in the future
-    const selectedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    if (selectedDate > today) {
-      setError('Cannot predict for future dates. Historical weather data is only available for past dates. Please select a date today or earlier.');
-      return;
-    }
-
-    // Validate date is not too old (Open-Meteo typically has data from 1940)
-    const earliestDate = new Date(1940, 0, 1);
-    if (selectedDate < earliestDate) {
-      setError('Historical weather data is only available from 1940 onwards. Please select a more recent date.');
-      return;
-    }
+    // Note: Future dates are allowed - the model can predict flood risk for upcoming dates
+    // using forecast weather data or seasonal patterns
 
     setLoading(true);
     setError(null);
@@ -177,47 +163,47 @@ const FloodPrediction = () => {
   // Calculate contributing factors based on weather data for visualization
   const getContributingFactors = () => {
     if (!predictionResult?.weather_data) return [];
-    
+
     const weather = predictionResult.weather_data;
     const factors = [];
-    
+
     if (weather.precipitation_sum > 50) {
-      factors.push({ 
-        factor: 'Heavy Precipitation', 
-        value: Math.min(100, (weather.precipitation_sum / 150) * 100) 
+      factors.push({
+        factor: 'Heavy Precipitation',
+        value: Math.min(100, (weather.precipitation_sum / 150) * 100)
       });
     }
     if (weather.precipitation_cumsum_7day > 300) {
-      factors.push({ 
-        factor: 'Cumulative Rainfall (7-day)', 
-        value: Math.min(100, (weather.precipitation_cumsum_7day / 700) * 100) 
+      factors.push({
+        factor: 'Cumulative Rainfall (7-day)',
+        value: Math.min(100, (weather.precipitation_cumsum_7day / 700) * 100)
       });
     }
     if (weather.rain_sum > 50) {
-      factors.push({ 
-        factor: 'Rain Intensity', 
-        value: Math.min(100, (weather.rain_sum / 150) * 100) 
+      factors.push({
+        factor: 'Rain Intensity',
+        value: Math.min(100, (weather.rain_sum / 150) * 100)
       });
     }
     if (weather.precipitation_hours > 15) {
-      factors.push({ 
-        factor: 'Extended Rainfall Duration', 
-        value: Math.min(100, (weather.precipitation_hours / 24) * 100) 
+      factors.push({
+        factor: 'Extended Rainfall Duration',
+        value: Math.min(100, (weather.precipitation_hours / 24) * 100)
       });
     }
     if (weather.temperature_mean < 20 && weather.precipitation_sum > 30) {
-      factors.push({ 
-        factor: 'Low Temperature + Rain', 
-        value: Math.min(100, ((20 - weather.temperature_mean) / 10) * 50 + (weather.precipitation_sum / 100) * 50) 
+      factors.push({
+        factor: 'Low Temperature + Rain',
+        value: Math.min(100, ((20 - weather.temperature_mean) / 10) * 50 + (weather.precipitation_sum / 100) * 50)
       });
     }
     if (weather.windspeed_max > 15) {
-      factors.push({ 
-        factor: 'Strong Winds', 
-        value: Math.min(100, (weather.windspeed_max / 30) * 100) 
+      factors.push({
+        factor: 'Strong Winds',
+        value: Math.min(100, (weather.windspeed_max / 30) * 100)
       });
     }
-    
+
     return factors;
   };
 
@@ -241,7 +227,7 @@ const FloodPrediction = () => {
             <Map className="w-6 h-6" />
             Prediction Parameters
           </h2>
-          
+
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Location Search */}
             <div className="relative">
@@ -269,7 +255,7 @@ const FloodPrediction = () => {
                   <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                 )}
               </div>
-              
+
               {/* Location Suggestions Dropdown */}
               {locationSuggestions.length > 0 && (
                 <div className="absolute z-10 w-full mt-1 bg-background-light border border-background-lighter rounded-lg shadow-lg max-h-60 overflow-auto">
@@ -319,7 +305,7 @@ const FloodPrediction = () => {
                     value={year}
                     onChange={(e) => {
                       const newYear = parseInt(e.target.value);
-                      const maxYear = new Date().getFullYear();
+                      const maxYear = new Date().getFullYear() + 5; // Allow up to 5 years in future
                       if (newYear >= 1940 && newYear <= maxYear) {
                         setYear(e.target.value);
                       } else if (newYear > maxYear) {
@@ -329,7 +315,7 @@ const FloodPrediction = () => {
                       }
                     }}
                     min="1940"
-                    max={new Date().getFullYear()}
+                    max={new Date().getFullYear() + 5}
                     className="w-full bg-background text-white px-4 py-2 rounded border border-gray-700 focus:border-primary focus:outline-none"
                     required
                   />
@@ -401,21 +387,20 @@ const FloodPrediction = () => {
           {predictionResult ? (
             <div className="space-y-6">
               <div className="flex flex-col items-center">
-                <RiskMeter 
-                  value={predictionResult.probability_percentage} 
-                  label={`${predictionResult.probability_percentage}% Probability`} 
-                  size="lg" 
+                <RiskMeter
+                  value={predictionResult.probability_percentage}
+                  label={`${predictionResult.probability_percentage}% Probability`}
+                  size="lg"
                 />
               </div>
               <div className="mt-6 space-y-4">
                 <div className="bg-background p-4 rounded-lg border border-background-lighter">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-gray-400 text-sm">Prediction</span>
-                    <span className={`text-lg font-bold ${
-                      predictionResult.flood_prediction === 1 
-                        ? 'text-risk-critical' 
-                        : 'text-green-500'
-                    }`}>
+                    <span className={`text-lg font-bold ${predictionResult.flood_prediction === 1
+                      ? 'text-risk-critical'
+                      : 'text-green-500'
+                      }`}>
                       {predictionResult.prediction_label}
                     </span>
                   </div>
@@ -424,7 +409,7 @@ const FloodPrediction = () => {
                     <span className="text-white font-bold">{predictionResult.probability_percentage}%</span>
                   </div>
                 </div>
-                
+
                 {predictionResult.weather_data && (
                   <>
                     <div className="bg-background p-4 rounded-lg border border-background-lighter">
@@ -440,6 +425,48 @@ const FloodPrediction = () => {
                         {predictionResult.weather_data.year}-{String(predictionResult.weather_data.month).padStart(2, '0')}-{String(predictionResult.weather_data.day).padStart(2, '0')}
                       </div>
                     </div>
+                    {predictionResult.flood_rate_info && (
+                      <div className="bg-background p-4 rounded-lg border border-background-lighter">
+                        <div className="text-sm text-gray-400 mb-2">Historical Flood Risk</div>
+                        <div className="space-y-1 text-xs text-gray-300">
+                          <div className="flex justify-between">
+                            <span>District:</span>
+                            <span className="text-white">{predictionResult.flood_rate_info.district || 'N/A'}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Province:</span>
+                            <span className="text-white">{predictionResult.flood_rate_info.province || 'N/A'}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Flood Rate:</span>
+                            <span className={`font-semibold ${predictionResult.flood_rate_info.location_flood_rate > 0.15
+                              ? 'text-risk-critical'
+                              : predictionResult.flood_rate_info.location_flood_rate > 0.08
+                                ? 'text-yellow-400'
+                                : 'text-green-400'
+                              }`}>
+                              {(predictionResult.flood_rate_info.location_flood_rate * 100).toFixed(1)}%
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Severity:</span>
+                            <span className={`capitalize ${predictionResult.flood_rate_info.severity === 'very_high' || predictionResult.flood_rate_info.severity === 'high'
+                              ? 'text-risk-critical'
+                              : predictionResult.flood_rate_info.severity === 'moderate'
+                                ? 'text-yellow-400'
+                                : 'text-green-400'
+                              }`}>
+                              {predictionResult.flood_rate_info.severity?.replace('_', ' ') || 'N/A'}
+                            </span>
+                          </div>
+                        </div>
+                        {predictionResult.flood_rate_info.notes && (
+                          <div className="mt-2 text-xs text-gray-500 italic">
+                            {predictionResult.flood_rate_info.notes}
+                          </div>
+                        )}
+                      </div>
+                    )}
                     <div className="bg-background p-4 rounded-lg border border-background-lighter">
                       <div className="text-sm text-gray-400 mb-2">Weather Summary</div>
                       <div className="space-y-1 text-xs text-gray-300">
