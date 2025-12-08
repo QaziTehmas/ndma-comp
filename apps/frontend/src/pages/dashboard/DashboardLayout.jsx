@@ -48,7 +48,7 @@ const DashboardLayout = () => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-background pt-20">
+    <div className="flex min-h-screen bg-background pt-20 dashboard-theme">
       {/* Sidebar */}
       <aside className="w-64 fixed left-0 top-20 bottom-0 bg-background-light/30 backdrop-blur-md border-r border-sidebar-border z-40 hidden lg:block">
         <div className="p-6">

@@ -62,8 +62,16 @@ def chat(query: str):
     """
     AI Analyst: Searches historical database for query.
     """
-    response = chat_engine.ask(query)
-    return {"response": response}
+    print(f"📥 Received chat query: {query}")
+    try:
+        response = chat_engine.ask(query)
+        print(f"📤 Sending response: {response[:100]}...")
+        return {"response": response}
+    except Exception as e:
+        print(f"❌ Error in chat endpoint: {e}")
+        import traceback
+        traceback.print_exc()
+        return {"response": "I encountered an issue processing your question. Could you try rephrasing it?"}
 
 @app.get("/api/history-risk")
 def history_risk(location: str):

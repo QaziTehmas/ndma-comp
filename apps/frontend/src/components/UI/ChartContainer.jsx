@@ -7,10 +7,10 @@ const ChartContainer = ({ title, children, loading, error }) => {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-background-light/50 backdrop-blur-md border border-white/5 rounded-xl p-6 shadow-glass relative overflow-hidden"
+      className="bg-card-bg/50 backdrop-blur-md border border-border-color rounded-xl p-6 shadow-glass relative overflow-hidden"
     >
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold font-heading text-white tracking-wide border-l-4 border-primary pl-3">
+        <h3 className="text-lg font-semibold font-heading text-text-primary tracking-wide border-l-4 border-primary pl-3">
           {title}
         </h3>
       </div>

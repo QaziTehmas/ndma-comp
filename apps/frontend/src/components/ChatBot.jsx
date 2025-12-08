@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Bot, User, Loader2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'ai', text: 'Hello! I am the NDMA AI Analyst. I have access to historical flood data from 1950-2025. Ask me anything about past flood events, risks, or damage statistics.' }
+    { role: 'ai', text: '👋 Hi! I\'m **FloodGuard AI**, your expert on Pakistan\'s flood history.\n\nI have comprehensive knowledge from **1950 to 2025**. Ask me about:\n• Historical flood events\n• Damages and casualties\n• Risk assessments\n• Safety measures\n\nWhat would you like to know?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -28,14 +29,23 @@ const ChatBot = () => {
     setIsLoading(true);
 
     try {
+      console.log("Sending request to:", `http://localhost:8000/api/chat?query=${encodeURIComponent(userMessage.text)}`);
       const response = await fetch(`http://localhost:8000/api/chat?query=${encodeURIComponent(userMessage.text)}`);
+      console.log("Response status:", response.status);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
+      console.log("Response data:", data);
 
       const aiMessage = { role: 'ai', text: data.response };
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
-      console.error("Chat error:", error);
-      setMessages(prev => [...prev, { role: 'ai', text: "Sorry, I'm having trouble connecting to the historical database. Please ensure the backend is running." }]);
+      console.error("Chat error details:", error);
+      console.error("Error message:", error.message);
+      setMessages(prev => [...prev, { role: 'ai', text: "I'm having trouble accessing my knowledge base right now. Please try again in a moment." }]);
     } finally {
       setIsLoading(false);
     }
@@ -65,10 +75,10 @@ const ChatBot = () => {
                   <Bot className="w-5 h-5 text-blue-400" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">NDMA AI Analyst</h3>
+                  <h3 className="font-semibold text-white">FloodGuard AI</h3>
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-xs text-slate-400">Online • 1950-2025 DB Access</span>
+                    <span className="text-xs text-slate-400">Expert Assistant • Ready</span>
                   </div>
                 </div>
               </div>
@@ -90,12 +100,28 @@ const ChatBot = () => {
                     </div>
                   )}
                   <div className={`
-                    max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed whitespace-pre-line
+                    max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed
                     ${msg.role === 'user'
                       ? 'bg-blue-600 text-white rounded-tr-sm'
                       : 'bg-slate-800/80 text-slate-200 border border-slate-700/50 rounded-tl-sm'}
                   `}>
-                    {msg.text}
+                    {msg.role === 'ai' ? (
+                      <ReactMarkdown
+                        components={{
+                          p: ({children}) => <p className="mb-2 last:mb-0">{children}</p>,
+                          strong: ({children}) => <strong className="font-bold text-white">{children}</strong>,
+                          ul: ({children}) => <ul className="list-disc ml-4 my-2 space-y-1">{children}</ul>,
+                          ol: ({children}) => <ol className="list-decimal ml-4 my-2 space-y-1">{children}</ol>,
+                          li: ({children}) => <li className="text-slate-200">{children}</li>,
+                          h3: ({children}) => <h3 className="font-bold text-white mb-2 mt-3 first:mt-0">{children}</h3>,
+                          code: ({children}) => <code className="bg-slate-900/50 px-1.5 py-0.5 rounded text-blue-300">{children}</code>,
+                        }}
+                      >
+                        {msg.text}
+                      </ReactMarkdown>
+                    ) : (
+                      <span className="whitespace-pre-line">{msg.text}</span>
+                    )}
                   </div>
                   {msg.role === 'user' && (
                     <div className="w-8 h-8 rounded-full bg-slate-700/50 flex items-center justify-center flex-shrink-0">
@@ -137,13 +163,12 @@ const ChatBot = () => {
                   <Send className="w-4 h-4" />
                 </button>
               </div>
-              <div className="mt-2 flex justify-center gap-2">
-                {['2010 Floods', 'Lahore Risk', 'Damages in Sindh'].map(suggestion => (
+              <div className="mt-2 flex flex-wrap justify-center gap-2">
+                {['2010 floods', 'Lahore risk', 'What is flash flood?', 'Sindh damages'].map(suggestion => (
                   <button
                     key={suggestion}
                     onClick={() => {
                       setInput(suggestion);
-                      // Optional: auto-send
                     }}
                     className="text-[10px] px-2 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 transition-colors"
                   >
@@ -168,11 +193,11 @@ const ChatBot = () => {
         ) : (
           <>
             <MessageSquare className="w-6 h-6" />
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full animate-pulse border-2 border-slate-900" />
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full animate-pulse border-2 border-slate-900" />
 
             {/* Tooltip on hover */}
             <span className="absolute right-full mr-4 bg-slate-800 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-slate-700/50 text-blue-200">
-              Ask AI Analyst
+              💬 Ask FloodGuard AI
             </span>
           </>
         )}

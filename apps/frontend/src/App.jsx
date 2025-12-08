@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { ThemeProvider } from './context/ThemeContext';
 import PDMENavbar from './components/PDMENavbar';
 import Footer from './components/Footer';
+import ChatBot from './components/ChatBot';
 import HomePage from './pages/HomePage';
 import DashboardLayout from './pages/dashboard/DashboardLayout';
 import DashboardOverview from './pages/dashboard/DashboardOverview';
@@ -47,6 +48,7 @@ function AppContent() {
         <Route path="*" element={<div className="p-6 text-white min-h-screen text-center">404 - Page Not Found</div>} />
       </Routes>
       {!isDashboard && <Footer />}
+      <ChatBot />
     </div>
   );
 }

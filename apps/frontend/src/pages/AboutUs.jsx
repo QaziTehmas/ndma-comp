@@ -24,7 +24,7 @@ const AboutUs = () => {
       role: "Full Stack Web Developer",
       icon: <Code className="w-6 h-6" />,
       color: "blue",
-      image: "/public/team/mzain.jpg",
+      image: "/team/mzain.jpg",
       socials: {
         github: "https://github.com/mzainnasir010",
         linkedin: "https://www.linkedin.com/in/muhammad-zain-nasir-811303365",
@@ -32,23 +32,11 @@ const AboutUs = () => {
       },
     },
     {
-      name: "Muhammad Ahsan Aftab",
-      role: "AI Engineer",
-      icon: <Brain className="w-6 h-6" />,
-      color: "purple",
-      socials: {
-        image: "/public/team/mahsan.jpg",
-        github: "https://github.com/mzainnasir010",
-        linkedin: "",
-        email: "",
-      },
-    },
-    {
       name: "Abdul Moeez",
       role: "Full Stack Web Developer",
       icon: <Code className="w-6 h-6" />,
       color: "green",
-      image: "/public/team/mmoeez.jpeg",
+      image: "/team/mmoeez.jpeg",
       socials: {
         github: "https://github.com/LuizSuarez",
         linkedin: "https://www.linkedin.com/in/abdul-moeez-025417365?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
@@ -56,23 +44,11 @@ const AboutUs = () => {
       },
     },
     {
-      name: "Abdur Rahman",
-      role: "Data Scientist",
-      icon: <Database className="w-6 h-6" />,
-      color: "orange",
-      image: "/public/team/mrahman1.jpeg",
-      socials: {
-        github: "https://github.com/AbdurRahmanCodes",
-        linkedin: "https://www.linkedin.com/in/abdur-rahmanml/",
-        email: "abdurrahman82733@gmail.com",
-      },
-    },
-    {
       name: "Qazi Tehmas",
       role: "Full Stack Web Developer",
       icon: <Code className="w-6 h-6" />,
       color: "cyan",
-      image: "/public/team/mtehmas.jpg",
+      image: "/team/mqazi.jpg",
       socials: {
         github: "https://github.com/QaziTehmas/",
         linkedin: "https://www.linkedin.com/in/qazitehmas/",
@@ -80,15 +56,27 @@ const AboutUs = () => {
       },
     },
     {
+      name: "Abdur Rahman",
+      role: "Data Scientist",
+      icon: <Database className="w-6 h-6" />,
+      color: "orange",
+      image: "/team/mrahman1.jpeg",
+      socials: {
+        github: "https://github.com/AbdurRahmanCodes",
+        linkedin: "https://www.linkedin.com/in/abdur-rahmanml/",
+        email: "abdurrahman82733@gmail.com",
+      },
+    },
+    {
       name: "Ammar Manzoor",
       role: "AI Engineer",
       icon: <Brain className="w-6 h-6" />,
       color: "pink",
-      image: "/public/team/mammar.jpg",
+      image: "/team/mammar.jpg",
       socials: {
-        github: "",
-        linkedin: "",
-        email: "",
+        github: "github.com/ammarr-x1",
+        linkedin: "https://linkedin.com/in/ammar-x1",
+        email: "ammarmanzoor02@gmail.com",
       },
     },
     {
@@ -96,11 +84,23 @@ const AboutUs = () => {
       role: "AI Engineer",
       icon: <Cpu className="w-6 h-6" />,
       color: "indigo",
-      image: "/public/team/maffan.jpg",
+      image: "/team/maffan.jpg",
       socials: {
-        github: "",
-        linkedin: "",
-        email: "",
+        github: "https://github.com/Affan-Shafiq",
+        linkedin: "https://www.linkedin.com/in/affan-shafiq-8b45132a6/",
+        email: "affanshafiq30@gmail.com ",
+      },
+    },
+    {
+      name: "Muhammad Ahsan Aftab",
+      role: "AI Engineer",
+      icon: <Brain className="w-6 h-6" />,
+      color: "purple",
+      image: "/team/mahsan.jpg",
+      socials: {
+        github: "https://github.com/Ahsan361",
+        linkedin: "https://www.linkedin.com/in/muhammad-ahsan-aftab-7085ba2a7/",
+        email: "ahsanaftab077@gmail.com",
       },
     },
   ];

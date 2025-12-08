@@ -97,14 +97,14 @@ const DashboardOverview = () => {
     <div className="p-6 space-y-6">
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Dashboard Overview</h1>
-        <p className="text-gray-400">Real-time disaster monitoring and alerts for Pakistan</p>
+        <h1 className="text-3xl font-bold text-text-primary mb-2">Dashboard Overview</h1>
+        <p className="text-text-secondary">Real-time disaster monitoring and alerts for Pakistan</p>
       </div>
 
       {/* Active Alerts */}
       {ndma?.current_alerts && ndma.current_alerts.length > 0 && (
         <div className="space-y-3">
-          <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-text-primary mb-4 flex items-center gap-2">
             <AlertTriangle className="w-6 h-6 text-risk-high" />
             Active Alerts
           </h2>
@@ -142,7 +142,7 @@ const DashboardOverview = () => {
                       ${selectedProvince === province ? 'ring-2 ring-primary' : ''}
                     `}
                   >
-                    <h3 className="font-bold text-white mb-1">{province}</h3>
+                    <h3 className="font-bold text-text-primary mb-1">{province}</h3>
                     <p className={`text-sm font-semibold ${
                       info.alert_level === 'High' ? 'text-risk-high' :
                       info.alert_level === 'Medium' ? 'text-risk-medium' :
@@ -160,29 +160,29 @@ const DashboardOverview = () => {
               {/* Selected Province Details */}
               {selectedProvince && ndma?.provinces[selectedProvince] && (
                 <div className="mt-6 p-4 bg-background-light rounded-lg border border-background-lighter">
-                  <h3 className="text-lg font-bold text-white mb-3">{selectedProvince} - Details</h3>
+                  <h3 className="text-lg font-bold text-text-primary mb-3">{selectedProvince} - Details</h3>
                   <div className="space-y-2 text-sm">
                     <div>
                       <span className="text-gray-400">Alert Level: </span>
-                      <span className="font-semibold text-white">
+                      <span className="font-semibold text-text-primary">
                         {ndma.provinces[selectedProvince].alert_level}
                       </span>
                     </div>
                     <div>
                       <span className="text-gray-400">Population at Risk: </span>
-                      <span className="font-semibold text-white">
+                      <span className="font-semibold text-text-primary">
                         {ndma.provinces[selectedProvince].population_at_risk.toLocaleString()}
                       </span>
                     </div>
                     <div>
                       <span className="text-gray-400">Vulnerable Districts: </span>
-                      <span className="text-white">
+                      <span className="text-text-primary">
                         {ndma.provinces[selectedProvince].vulnerable_districts.join(', ')}
                       </span>
                     </div>
                     <div>
                       <span className="text-gray-400">High Risk Areas: </span>
-                      <span className="text-white">
+                      <span className="text-text-primary">
                         {ndma.provinces[selectedProvince].high_risk_areas.join(', ')}
                       </span>
                     </div>
@@ -209,9 +209,9 @@ const DashboardOverview = () => {
                     >
                       <div className="flex items-center gap-3">
                         <Phone className="w-4 h-4 text-primary group-hover:text-primary-light" />
-                        <span className="text-sm text-white">{name.replace(/_/g, ' ')}</span>
+                        <span className="text-sm text-text-primary">{name.replace(/_/g, ' ')}</span>
                       </div>
-                      <span className="text-sm font-mono text-gray-400 group-hover:text-white">
+                      <span className="text-sm font-mono text-text-secondary group-hover:text-text-primary">
                         {number}
                       </span>
                     </a>
@@ -221,19 +221,19 @@ const DashboardOverview = () => {
 
               {/* Provincial Contacts */}
               <div>
-                <h4 className="text-sm font-bold text-gray-400 mb-3 uppercase">Provincial PDMAs</h4>
+                <h4 className="text-sm font-bold text-gray-900 mb-3 uppercase">Provincial PDMAs</h4>
                 <div className="space-y-2">
                   {contacts?.provincial && Object.entries(contacts.provincial).map(([province, info]) => (
                     <div key={province} className="p-3 bg-background rounded-lg">
-                      <div className="font-semibold text-white text-sm mb-2">{province}</div>
+                      <div className="font-semibold text-text-primary text-sm mb-2">{province}</div>
                       {Object.entries(info).map(([service, number]) => (
                         <a
                           key={service}
                           href={`tel:${number}`}
                           className="flex items-center justify-between text-xs py-1 hover:text-primary transition-colors"
                         >
-                          <span className="text-gray-400">{service.replace(/_/g, ' ')}</span>
-                          <span className="font-mono text-gray-300">{number}</span>
+                          <span className="text-text-secondary">{service.replace(/_/g, ' ')}</span>
+                          <span className="font-mono text-text-muted">{number}</span>
                         </a>
                       ))}
                     </div>
@@ -247,12 +247,13 @@ const DashboardOverview = () => {
 
       {/* 6-City Weather Cards */}
       <div>
-        <h2 className="text-xl font-bold text-white mb-4">Current Weather</h2>
+        <h2 className="text-xl font-bold text-text-primary mb-4">Current Weather</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
           {weatherData.map((weather) => (
             <div
               key={weather.city}
-              className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg p-4 text-white shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-1"
+              style={{ background: 'var(--weather-card-gradient)' }}
+              className="rounded-lg p-4 text-text-primary shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-1"
             >
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-bold">{weather.city}</h3>

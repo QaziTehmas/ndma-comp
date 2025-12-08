@@ -264,7 +264,7 @@ const Analytics = () => {
                   <div className="text-xs text-gray-400 mb-1">High Risk Districts:</div>
                   <div className="flex flex-wrap gap-1">
                     {province.highRiskDistricts.map(district => (
-                      <span key={district} className="px-2 py-1 bg-background-lighter rounded text-xs text-gray-300">
+                      <span key={district} className="px-2 py-1 bg-slate-700 rounded text-xs text-gray-300">
                         {district}
                       </span>
                     ))}
