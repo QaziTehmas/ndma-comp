@@ -103,6 +103,18 @@ const AboutUs = () => {
         email: "ahsanaftab077@gmail.com",
       },
     },
+    {
+      name: "Hammad Rao",
+      role: "UI/UX Designer",
+      icon: <Brain className="w-6 h-6" />,
+      color: "green",
+      image: "/team/mrao.png",
+      socials: {
+        github: "https://github.com/rottenberry23/",
+        linkedin: "https://www.linkedin.com/in/hammad023/",
+        email: "raohq8@gmail.com",
+      },
+    },
   ];
 
   const techStack = [
