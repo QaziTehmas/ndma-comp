@@ -22,7 +22,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-background text-text-primary transition-colors duration-300">
-      <PDMENavbar />
+      {!isDashboard && <PDMENavbar />}
       <Routes>
         {/* Home Page */}
         <Route path="/" element={<HomePage />} />
