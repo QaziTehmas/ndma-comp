@@ -41,7 +41,7 @@ const DashboardLayout = () => {
     { path: '/', label: 'Home', icon: <Home className="w-5 h-5" /> },
     { path: '/about', label: 'About Us', icon: <Users className="w-5 h-5" /> },
     { path: '/history/floods', label: 'Floods History', icon: <History className="w-5 h-5" /> },
-    { path: '/history/earthquakes', label: 'Earthquake History', icon: <Zap className="w-5 h-5" /> },
+    // { path: '/history/earthquakes', label: 'Earthquake History', icon: <Zap className="w-5 h-5" /> },
   ];
 
   return (

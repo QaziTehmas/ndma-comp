@@ -56,6 +56,12 @@ export const loadMonsoon2025 = async () => {
 };
 
 /**
+ * Alias for loadMonsoon2025
+ * @returns {Promise<Object>} Monsoon 2025 results
+ */
+export const loadMonsoon2025Results = loadMonsoon2025;
+
+/**
  * Load relief stocks inventory
  * @returns {Promise<Object>} Relief stocks data
  */

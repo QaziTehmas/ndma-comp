@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { AlertBanner, ChartContainer } from '../../components/UI';
+import { AlertBanner, ChartContainer, StatCard } from '../../components/UI';
 import { useMultipleData } from '../../hooks/useData';
 import {
   loadNDMAData,
   loadEmergencyContacts,
+  loadFloodHistory,
+  loadDisasterStats,
+  loadProvincialImpacts,
+  loadMonsoon2025Results,
 } from '../../services/dataLoader';
 import {
   Cloud,
@@ -13,12 +17,20 @@ import {
   Droplets,
   Phone,
   AlertTriangle,
+  TrendingUp,
+  Users,
+  Home,
+  Activity,
 } from 'lucide-react';
 
 const DashboardOverview = () => {
   const { data, loading, error } = useMultipleData({
     ndma: loadNDMAData,
     contacts: loadEmergencyContacts,
+    floodHistory: loadFloodHistory,
+    disasterStats: loadDisasterStats,
+    provincialImpacts: loadProvincialImpacts,
+    monsoon2025: loadMonsoon2025Results,
   });
 
   // Sample weather data for 6 cities
@@ -91,7 +103,12 @@ const DashboardOverview = () => {
     );
   }
 
-  const { ndma, contacts } = data;
+  const { ndma, contacts, floodHistory, disasterStats, provincialImpacts, monsoon2025 } = data;
+
+  // Calculate total historical impact
+  const totalAffectedHistorical = provincialImpacts?.reduce((sum, p) => sum + p.totalAffected, 0) || 0;
+  const totalCasualtiesHistorical = provincialImpacts?.reduce((sum, p) => sum + p.totalCasualties, 0) || 0;
+  const totalEconomicLoss = provincialImpacts?.reduce((sum, p) => sum + p.economicLoss, 0) || 0;
 
   return (
     <div className="p-6 space-y-6">
@@ -99,6 +116,74 @@ const DashboardOverview = () => {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-text-primary mb-2">Dashboard Overview</h1>
         <p className="text-text-secondary">Real-time disaster monitoring and alerts for Pakistan</p>
+      </div>
+
+      {/* Critical Statistics - Competition Highlight */}
+      <div className="bg-gradient-to-br from-blue-900/30 via-purple-900/20 to-background border border-blue-500/30 rounded-xl p-6 shadow-2xl">
+        <div className="flex items-center gap-3 mb-4">
+          <TrendingUp className="w-8 h-8 text-blue-400" />
+          <div>
+            <h2 className="text-2xl font-bold text-text-primary">Pakistan Flood Impact Overview</h2>
+            <p className="text-text-secondary text-sm">Historical data spanning 75+ years (1950-2025)</p>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+          <StatCard
+            value={`${(totalAffectedHistorical / 1000000).toFixed(0)}M+`}
+            label="Total People Affected"
+            icon={<Users />}
+            color="blue"
+          />
+          <StatCard
+            value={totalCasualtiesHistorical?.toLocaleString() || '0'}
+            label="Total Casualties"
+            icon={<Activity />}
+            color="red"
+          />
+          <StatCard
+            value={`$${totalEconomicLoss?.toFixed(1)}B`}
+            label="Economic Loss"
+            icon={<TrendingUp />}
+            color="green"
+          />
+          <StatCard
+            value={monsoon2025?.summary?.houses_damaged?.toLocaleString() || '0'}
+            label="Houses Damaged (2025)"
+            icon={<Home />}
+            color="orange"
+          />
+        </div>
+
+        {/* 2025 Monsoon Alert */}
+        {monsoon2025 && (
+          <div className="mt-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-bold text-red-400 mb-2">Monsoon 2025 Impact ({monsoon2025.period})</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                  <div>
+                    <div className="text-text-muted">Deaths</div>
+                    <div className="text-xl font-bold text-text-primary">{monsoon2025.summary.total_deaths}</div>
+                  </div>
+                  <div>
+                    <div className="text-text-muted">Injured</div>
+                    <div className="text-xl font-bold text-text-primary">{monsoon2025.summary.total_injured}</div>
+                  </div>
+                  <div>
+                    <div className="text-text-muted">Rescued</div>
+                    <div className="text-xl font-bold text-text-primary">{monsoon2025.summary.people_rescued.toLocaleString()}</div>
+                  </div>
+                  <div>
+                    <div className="text-text-muted">Active Camps</div>
+                    <div className="text-xl font-bold text-text-primary">{monsoon2025.summary.active_relief_camps}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Active Alerts */}

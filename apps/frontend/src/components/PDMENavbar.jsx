@@ -103,12 +103,12 @@ function PDMENavbar() {
                     >
                       Floods History
                     </Link>
-                    <Link
+                    {/* <Link
                       to="/history/earthquakes"
                       className="block px-4 py-2 text-sm text-text-secondary hover:bg-white/5 hover:text-primary transition-colors"
                     >
                       Earthquake History
-                    </Link>
+                    </Link> */}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -168,13 +168,13 @@ function PDMENavbar() {
                 >
                   Floods History
                 </Link>
-                <Link
+                {/* <Link
                   to="/history/earthquakes"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block py-2 text-gray-300 hover:text-primary"
                 >
                   Earthquake History
-                </Link>
+                </Link> */}
               </div>
             </div>
           </motion.div>
