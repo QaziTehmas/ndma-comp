@@ -10,7 +10,7 @@ scikit-learn
 catboost
 xgboost
 joblib
-pydantic==2.5.0
+pydantic
 reportlab
 Pillow
 google-generativeai

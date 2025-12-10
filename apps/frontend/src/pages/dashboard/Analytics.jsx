@@ -25,6 +25,7 @@ import {
   loadMonsoon2025,
 } from '../../services/dataLoader';
 import { Users, DollarSign, AlertTriangle, Calendar } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 const Analytics = () => {
   const { data, loading, error } = useMultipleData({
@@ -34,10 +35,30 @@ const Analytics = () => {
     monsoon2025: loadMonsoon2025,
   });
 
+  const { theme } = useTheme();
+  
+  // Theme-aware chart colors
+  const isDark = theme === 'dark';
+  const chartTextColor = isDark ? '#94a3b8' : '#64748b';
+  const chartGridColor = isDark ? 'rgba(148, 163, 184, 0.15)' : 'rgba(148, 163, 184, 0.1)';
+  const chartTooltipBg = isDark ? 'rgba(15, 23, 42, 0.98)' : 'rgba(255, 255, 255, 0.98)';
+  const chartTooltipText = isDark ? '#f1f5f9' : '#0f172a';
+  const chartTooltipBorder = isDark ? '#334155' : '#e2e8f0';
+  const chartColors = [
+    isDark ? '#06b6d4' : '#0284c7',
+    isDark ? '#22d3ee' : '#38bdf8',
+    isDark ? '#10b981' : '#16a34a',
+    isDark ? '#f59e0b' : '#d97706',
+    isDark ? '#f97316' : '#ea580c',
+    isDark ? '#f43f5e' : '#dc2626',
+    isDark ? '#8b5cf6' : '#7c3aed',
+    isDark ? '#ec4899' : '#db2777',
+  ];
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="text-white text-xl">Loading 75 years of flood data...</div>
+        <div className="text-text-primary text-xl">Loading 75 years of flood data...</div>
       </div>
     );
   }
@@ -65,7 +86,6 @@ const Analytics = () => {
     value: p.totalAffected
   })) || [];
 
-  const COLORS = ['#EF4444', '#F59E0B', '#10B981', '#3B82F6', '#8B5CF6', '#EC4899'];
 
   // Economic impact trend data
   const economicTrendData = climateTrends?.economicImpactTrend || [];
@@ -77,8 +97,8 @@ const Analytics = () => {
     <div className="p-6 space-y-6">
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Historical Flood Analytics (1950-2025)</h1>
-        <p className="text-gray-400">Comprehensive analysis of 75 years of Pakistan's flood history</p>
+        <h1 className="text-3xl font-bold text-text-primary mb-2">Historical Flood Analytics (1950-2025)</h1>
+        <p className="text-text-secondary">Comprehensive analysis of 75 years of Pakistan's flood history</p>
       </div>
 
       {/* Hero Statistics */}
@@ -115,15 +135,26 @@ const Analytics = () => {
         <ChartContainer title="Flood Frequency by Decade">
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={decadeData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="decade" stroke="#94a3b8" />
-              <YAxis stroke="#94a3b8" />
-              <Tooltip
-                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155' }}
-                labelStyle={{ color: '#f1f5f9' }}
+              <CartesianGrid strokeDasharray="3 3" stroke={chartGridColor} />
+              <XAxis 
+                dataKey="decade" 
+                stroke={chartTextColor}
+                tick={{ fill: chartTextColor, fontSize: 11 }}
               />
-              <Legend />
-              <Bar dataKey="events" fill="#3B82F6" name="Flood Events" />
+              <YAxis 
+                stroke={chartTextColor}
+                tick={{ fill: chartTextColor, fontSize: 11 }}
+              />
+              <Tooltip
+                contentStyle={{ 
+                  backgroundColor: chartTooltipBg, 
+                  border: `1px solid ${chartTooltipBorder}`, 
+                  borderRadius: '8px' 
+                }}
+                labelStyle={{ color: chartTooltipText }}
+              />
+              <Legend wrapperStyle={{ color: chartTooltipText, fontSize: '12px', fontWeight: 600 }} />
+              <Bar dataKey="events" fill={chartColors[0]} name="Flood Events" />
             </BarChart>
           </ResponsiveContainer>
         </ChartContainer>
@@ -139,14 +170,22 @@ const Analytics = () => {
                 labelLine={false}
                 label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                 outerRadius={100}
-                fill="#8884d8"
+                fill={chartColors[0]}
                 dataKey="value"
               >
                 {provincialPieData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => `${(value / 1000000).toFixed(1)}M people`} />
+              <Tooltip
+                contentStyle={{ 
+                  backgroundColor: chartTooltipBg, 
+                  border: `1px solid ${chartTooltipBorder}`, 
+                  borderRadius: '8px' 
+                }}
+                labelStyle={{ color: chartTooltipText }}
+                formatter={(value) => `${(value / 1000000).toFixed(1)}M people`} 
+              />
             </PieChart>
           </ResponsiveContainer>
         </ChartContainer>
@@ -155,20 +194,31 @@ const Analytics = () => {
         <ChartContainer title="Economic Impact Over Time">
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={economicTrendData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="period" stroke="#94a3b8" />
-              <YAxis stroke="#94a3b8" tickFormatter={(value) => `$${value}B`} />
+              <CartesianGrid strokeDasharray="3 3" stroke={chartGridColor} />
+              <XAxis 
+                dataKey="period" 
+                stroke={chartTextColor}
+                tick={{ fill: chartTextColor, fontSize: 11 }}
+              />
+              <YAxis 
+                stroke={chartTextColor}
+                tick={{ fill: chartTextColor, fontSize: 11, formatter: (value) => `$${value}B` }}
+              />
               <Tooltip
-                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155' }}
-                labelStyle={{ color: '#f1f5f9' }}
+                contentStyle={{ 
+                  backgroundColor: chartTooltipBg, 
+                  border: `1px solid ${chartTooltipBorder}`, 
+                  borderRadius: '8px' 
+                }}
+                labelStyle={{ color: chartTooltipText }}
                 formatter={(value) => [`$${value}B`, 'Economic Loss']}
               />
               <Area
                 type="monotone"
                 dataKey="totalLoss"
-                stroke="#F59E0B"
-                fill="#F59E0B"
-                fillOpacity={0.6}
+                stroke={chartColors[2]}
+                fill={chartColors[2]}
+                fillOpacity={0.3}
                 name="Economic Loss"
               />
             </AreaChart>
@@ -179,22 +229,30 @@ const Analytics = () => {
         <ChartContainer title="Recent Major Floods (2010-2024)">
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={recentFloods}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="year" stroke="#94a3b8" />
+              <CartesianGrid strokeDasharray="3 3" stroke={chartGridColor} />
+              <XAxis 
+                dataKey="year" 
+                stroke={chartTextColor}
+                tick={{ fill: chartTextColor, fontSize: 11 }}
+              />
               <YAxis
                 yAxisId="left"
-                stroke="#EF4444"
-                tickFormatter={(value) => `${(value / 1000000).toFixed(0)}M`}
+                stroke={chartColors[5]}
+                tick={{ fill: chartColors[5], fontSize: 11, formatter: (value) => `${(value / 1000000).toFixed(0)}M` }}
               />
               <YAxis
                 yAxisId="right"
                 orientation="right"
-                stroke="#10B981"
-                tickFormatter={(value) => `$${value}B`}
+                stroke={chartColors[2]}
+                tick={{ fill: chartColors[2], fontSize: 11, formatter: (value) => `$${value}B` }}
               />
               <Tooltip
-                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155' }}
-                labelStyle={{ color: '#f1f5f9' }}
+                contentStyle={{ 
+                  backgroundColor: chartTooltipBg, 
+                  border: `1px solid ${chartTooltipBorder}`, 
+                  borderRadius: '8px' 
+                }}
+                labelStyle={{ color: chartTooltipText }}
                 formatter={(value, name) => {
                   if (name === 'People Affected') {
                     return [`${(value / 1000000).toFixed(2)}M people`, name];
@@ -202,25 +260,25 @@ const Analytics = () => {
                   return [`$${value}B`, name];
                 }}
               />
-              <Legend />
+              <Legend wrapperStyle={{ color: chartTooltipText, fontSize: '12px', fontWeight: 600 }} />
               <Line
                 yAxisId="left"
                 type="monotone"
                 dataKey="affected"
-                stroke="#EF4444"
+                stroke={chartColors[5]}
                 strokeWidth={3}
                 name="People Affected"
-                dot={{ fill: '#EF4444', r: 6 }}
+                dot={{ fill: chartColors[5], r: 6 }}
                 activeDot={{ r: 8 }}
               />
               <Line
                 yAxisId="right"
                 type="monotone"
                 dataKey="economicLoss"
-                stroke="#10B981"
+                stroke={chartColors[2]}
                 strokeWidth={3}
                 name="Economic Loss"
-                dot={{ fill: '#10B981', r: 6 }}
+                dot={{ fill: chartColors[2], r: 6 }}
                 activeDot={{ r: 8 }}
               />
             </LineChart>
@@ -229,42 +287,42 @@ const Analytics = () => {
       </div>
 
       {/* Provincial Risk Assessment */}
-      <div className="bg-background-light rounded-lg p-6 border border-background-lighter">
-        <h2 className="text-2xl font-bold text-white mb-6">Provincial Risk Assessment</h2>
+      <div className="bg-background-light rounded-xl p-6 border border-border-color shadow-lg">
+        <h2 className="text-2xl font-bold text-text-primary mb-6">Provincial Risk Assessment</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {provincialImpacts?.map((province) => (
-            <div key={province.province} className="bg-background rounded-lg p-4 border border-background-lighter">
+            <div key={province.province} className="bg-background rounded-lg p-4 border border-border-color hover:shadow-md transition-shadow">
               <div className="flex justify-between items-start mb-3">
-                <h3 className="font-bold text-white text-lg">{province.province}</h3>
-                <span className={`px-2 py-1 rounded text-xs font-semibold ${province.riskLevel.includes('Very High') ? 'bg-risk-critical text-white' :
-                  province.riskLevel.includes('High') ? 'bg-risk-high text-white' :
-                    'bg-risk-medium text-white'
+                <h3 className="font-bold text-text-primary text-lg">{province.province}</h3>
+                <span className={`px-2 py-1 rounded text-xs font-semibold ${province.riskLevel.includes('Very High') ? 'bg-risk-critical text-text-primary' :
+                  province.riskLevel.includes('High') ? 'bg-risk-high text-text-primary' :
+                    'bg-risk-medium text-text-primary'
                   }`}>
                   {province.riskLevel}
                 </span>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Total Events:</span>
-                  <span className="text-white font-semibold">{province.totalEvents}</span>
+                  <span className="text-text-secondary">Total Events:</span>
+                  <span className="text-text-primary font-semibold">{province.totalEvents}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">People Affected:</span>
-                  <span className="text-white font-semibold">{(province.totalAffected / 1000000).toFixed(1)}M</span>
+                  <span className="text-text-secondary">People Affected:</span>
+                  <span className="text-text-primary font-semibold">{(province.totalAffected / 1000000).toFixed(1)}M</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Casualties:</span>
+                  <span className="text-text-secondary">Casualties:</span>
                   <span className="text-risk-critical font-semibold">{province.totalCasualties.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Economic Loss:</span>
+                  <span className="text-text-secondary">Economic Loss:</span>
                   <span className="text-risk-high font-semibold">${province.economicLoss}B</span>
                 </div>
-                <div className="mt-3 pt-3 border-t border-background-lighter">
-                  <div className="text-xs text-gray-400 mb-1">High Risk Districts:</div>
+                <div className="mt-3 pt-3 border-t border-border-color">
+                  <div className="text-xs text-text-muted mb-1">High Risk Districts:</div>
                   <div className="flex flex-wrap gap-1">
                     {province.highRiskDistricts.map(district => (
-                      <span key={district} className="px-2 py-1 bg-slate-700 rounded text-xs text-gray-300">
+                      <span key={district} className="px-2 py-1 bg-background-light rounded text-xs text-text-secondary border border-border-color">
                         {district}
                       </span>
                     ))}
@@ -278,32 +336,32 @@ const Analytics = () => {
 
       {/* Monsoon 2025 Section */}
       {monsoon2025 && (
-        <div className="bg-background-light rounded-lg p-6 border border-background-lighter">
-          <h2 className="text-2xl font-bold text-white mb-6">Monsoon 2025 Case Study</h2>
+        <div className="bg-background-light rounded-xl p-6 border border-border-color shadow-lg">
+          <h2 className="text-2xl font-bold text-text-primary mb-6">Monsoon 2025 Case Study</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-background rounded-lg p-4">
+            <div className="bg-background rounded-lg p-4 border border-border-color hover:shadow-md transition-shadow">
               <div className="text-3xl font-bold text-risk-critical mb-2">
                 {monsoon2025?.summary?.total_deaths.toLocaleString()}
               </div>
-              <div className="text-sm text-gray-400">Total Deaths</div>
+              <div className="text-sm text-text-secondary">Total Deaths</div>
             </div>
-            <div className="bg-background rounded-lg p-4">
+            <div className="bg-background rounded-lg p-4 border border-border-color hover:shadow-md transition-shadow">
               <div className="text-3xl font-bold text-risk-high mb-2">
                 {monsoon2025?.summary?.total_injured.toLocaleString()}
               </div>
-              <div className="text-sm text-gray-400">Total Injured</div>
+              <div className="text-sm text-text-secondary">Total Injured</div>
             </div>
-            <div className="bg-background rounded-lg p-4">
+            <div className="bg-background rounded-lg p-4 border border-border-color hover:shadow-md transition-shadow">
               <div className="text-3xl font-bold text-risk-medium mb-2">
                 {monsoon2025?.summary?.houses_damaged.toLocaleString()}
               </div>
-              <div className="text-sm text-gray-400">Houses Damaged</div>
+              <div className="text-sm text-text-secondary">Houses Damaged</div>
             </div>
-            <div className="bg-background rounded-lg p-4">
+            <div className="bg-background rounded-lg p-4 border border-border-color hover:shadow-md transition-shadow">
               <div className="text-3xl font-bold text-primary mb-2">
                 {(monsoon2025?.summary?.people_rescued / 1000000).toFixed(2)}M
               </div>
-              <div className="text-sm text-gray-400">People Rescued</div>
+              <div className="text-sm text-text-secondary">People Rescued</div>
             </div>
           </div>
         </div>

@@ -133,6 +133,25 @@ class FloodPredictionService:
             raise ValueError("Model not loaded. Please check model files.")
         
         try:
+            # Extract date information for logging
+            year = input_data.get('year', 'N/A')
+            month = input_data.get('month', 'N/A')
+            day = input_data.get('day', 'N/A')
+            location = input_data.get('location', 'N/A')
+            date_str = f"{year}-{month:02d}-{day:02d}" if all(x != 'N/A' for x in [year, month, day]) else 'N/A'
+            
+            print(f"🌊 Flood Prediction - Date: {date_str}, Location: {location}")
+            print(f"🌊 Weather Data - Precip: {input_data.get('precipitation_sum', 'N/A')} mm, "
+                  f"Temp: {input_data.get('temperature_mean', 'N/A')}°C, "
+                  f"Wind: {input_data.get('windspeed_max', 'N/A')} m/s")
+            
+            # Print input data structure for debugging (production: remove or reduce)
+            import json
+            print(f"🌊 Input Data Keys ({len(input_data)} fields): {list(input_data.keys())}")
+            print(f"🌊 Input Data Sample (first 10 fields):")
+            sample_data = {k: v for i, (k, v) in enumerate(input_data.items()) if i < 10}
+            print(json.dumps(sample_data, indent=2, default=str))
+            
             # Convert to DataFrame (single row)
             input_df = pd.DataFrame([input_data])
             
@@ -158,6 +177,9 @@ class FloodPredictionService:
             
             # Get probability of flood (class 1)
             prediction_proba = float(self.model.predict_proba(X_pred_scaled)[0][1])
+            
+            print(f"🌊 Prediction Result - Probability: {prediction_proba:.4f} ({prediction_proba*100:.2f}%), "
+                  f"Prediction: {'⚠️ FLOOD RISK' if prediction_class == 1 else '✓ NO FLOOD'}")
             
             return {
                 'flood_probability': prediction_proba,

@@ -138,8 +138,20 @@ def predict_flood(request: FloodPredictionRequest):
         - flood_rate_info: Location flood rate details
     """
     import traceback
+    import json
     
     try:
+        # Print request body for debugging
+        request_dict = {
+            "year": request.year,
+            "month": request.month,
+            "day": request.day,
+            "location": request.location,
+            "latitude": request.latitude,
+            "longitude": request.longitude
+        }
+        print(f"📥 Flood Prediction Request Body:")
+        print(json.dumps(request_dict, indent=2))
         # 1. Fetch historical weather data for the given location and date
         weather_service = get_weather_service()
         weather_data = weather_service.fetch_historical_weather(
@@ -189,6 +201,86 @@ def predict_flood(request: FloodPredictionRequest):
         raise HTTPException(status_code=500, detail=error_msg)
 
 
+@app.post("/api/flood-prediction/current")
+def predict_flood_current(request: FloodPredictionRequest):
+    """
+    Predict flood probability for current date using the selected location.
+    
+    Args:
+        request: Contains location, latitude, longitude (year/month/day are ignored, uses today)
+        
+    Returns:
+        Same as /api/flood-prediction but for current date
+    """
+    from datetime import datetime
+    import traceback
+    import json
+    
+    try:
+        # Print request body for debugging
+        request_dict = {
+            "year": request.year,
+            "month": request.month,
+            "day": request.day,
+            "location": request.location,
+            "latitude": request.latitude,
+            "longitude": request.longitude,
+            "note": "Using current date (year/month/day ignored)"
+        }
+        print(f"📥 Flood Prediction (Current) Request Body:")
+        print(json.dumps(request_dict, indent=2))
+        today = datetime.now()
+        
+        # 1. Fetch current weather data
+        weather_service = get_weather_service()
+        weather_data = weather_service.fetch_historical_weather(
+            latitude=request.latitude,
+            longitude=request.longitude,
+            year=today.year,
+            month=today.month,
+            day=today.day
+        )
+        
+        # Add location name to weather data
+        weather_data["location"] = request.location
+        
+        # 2. Get location_flood_rate from flood_rate.json
+        flood_rate_service = get_flood_rate_service()
+        flood_rate_info = flood_rate_service.get_location_flood_rate(
+            latitude=request.latitude,
+            longitude=request.longitude,
+            location_name=request.location
+        )
+        
+        # Add location_flood_rate to weather_data for prediction
+        weather_data["location_flood_rate"] = flood_rate_info["location_flood_rate"]
+        
+        # 3. Make prediction using the fetched weather data
+        prediction_service = get_prediction_service()
+        result = prediction_service.predict(weather_data)
+        
+        # 4. Include weather data and flood rate info in response
+        result["weather_data"] = weather_data
+        result["flood_rate_info"] = flood_rate_info
+        result["is_current"] = True
+        
+        return result
+        
+    except ValueError as e:
+        error_msg = str(e)
+        print(f"ValueError in current flood prediction: {error_msg}")
+        raise HTTPException(status_code=400, detail=error_msg)
+    except FileNotFoundError as e:
+        error_msg = f"Model file not found: {str(e)}"
+        print(f"FileNotFoundError: {error_msg}")
+        raise HTTPException(status_code=500, detail=error_msg)
+    except Exception as e:
+        error_msg = f"Prediction error: {str(e)}"
+        print(f"Exception in current flood prediction: {error_msg}")
+        print(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=error_msg)
+
+
 @app.post("/api/fire-prediction")
 def predict_fire(request: FirePredictionRequest):
     """
@@ -211,8 +303,20 @@ def predict_fire(request: FirePredictionRequest):
         - weather_data: The fetched weather data used for prediction
     """
     import traceback
+    import json
     
     try:
+        # Print request body for debugging
+        request_dict = {
+            "year": request.year,
+            "month": request.month,
+            "day": request.day,
+            "location": request.location,
+            "latitude": request.latitude,
+            "longitude": request.longitude
+        }
+        print(f"📥 Fire Prediction Request Body:")
+        print(json.dumps(request_dict, indent=2))
         # 1. Fetch weather data for fire prediction
         fire_weather_service = get_fire_weather_service()
         weather_data = fire_weather_service.fetch_fire_weather(
@@ -246,6 +350,74 @@ def predict_fire(request: FirePredictionRequest):
     except Exception as e:
         error_msg = f"Fire prediction error: {str(e)}"
         print(f"Exception in fire prediction: {error_msg}")
+        print(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=error_msg)
+
+
+@app.post("/api/fire-prediction/current")
+def predict_fire_current(request: FirePredictionRequest):
+    """
+    Predict fire risk for current date using the selected location.
+    
+    Args:
+        request: Contains location, latitude, longitude (year/month/day are ignored, uses today)
+        
+    Returns:
+        Same as /api/fire-prediction but for current date
+    """
+    from datetime import datetime
+    import traceback
+    import json
+    
+    try:
+        # Print request body for debugging
+        request_dict = {
+            "year": request.year,
+            "month": request.month,
+            "day": request.day,
+            "location": request.location,
+            "latitude": request.latitude,
+            "longitude": request.longitude,
+            "note": "Using current date (year/month/day ignored)"
+        }
+        print(f"📥 Fire Prediction (Current) Request Body:")
+        print(json.dumps(request_dict, indent=2))
+        today = datetime.now()
+        
+        # 1. Fetch current weather data for fire prediction
+        fire_weather_service = get_fire_weather_service()
+        weather_data = fire_weather_service.fetch_fire_weather(
+            latitude=request.latitude,
+            longitude=request.longitude,
+            year=today.year,
+            month=today.month,
+            day=today.day
+        )
+        
+        # Add location name to weather data
+        weather_data["location"] = request.location
+        
+        # 2. Make prediction using fire risk service
+        fire_risk_service = get_fire_risk_service()
+        result = fire_risk_service.predict(weather_data)
+        
+        # 3. Include weather data in response
+        result["weather_data"] = weather_data
+        result["is_current"] = True
+        
+        return result
+        
+    except ValueError as e:
+        error_msg = str(e)
+        print(f"ValueError in current fire prediction: {error_msg}")
+        raise HTTPException(status_code=400, detail=error_msg)
+    except FileNotFoundError as e:
+        error_msg = f"Fire model file not found: {str(e)}"
+        print(f"FileNotFoundError: {error_msg}")
+        raise HTTPException(status_code=500, detail=error_msg)
+    except Exception as e:
+        error_msg = f"Fire prediction error: {str(e)}"
+        print(f"Exception in current fire prediction: {error_msg}")
         print(traceback.format_exc())
         raise HTTPException(status_code=500, detail=error_msg)
 

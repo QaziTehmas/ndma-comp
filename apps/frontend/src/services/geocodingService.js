@@ -46,29 +46,42 @@ export async function reverseGeocode(lat, lon) {
   }
 }
 
-// Forward geocoding - search for a location by name
+// Forward geocoding - search for a location by name - LIMITED TO PAKISTAN ONLY
 export async function searchLocation(query) {
   try {
     const searchUrl = `https://nominatim.openstreetmap.org/search`;
     const params = {
-      q: query,
+      q: `${query}, Pakistan`, // Explicitly add Pakistan to search
       format: "json",
-      limit: 1,
+      limit: 5, // Get more results to filter
       addressdetails: 1,
+      countrycodes: 'pk', // Limit to Pakistan country code
     };
 
-    const { data } = await axios.get(searchUrl, { params });
+    const { data } = await axios.get(searchUrl, { 
+      params,
+      headers: {
+        'User-Agent': 'FloodManagementSystem/1.0'
+      }
+    });
 
     if (data && data.length > 0) {
-      const result = data[0];
+      // Filter to ensure it's in Pakistan
+      const pakistanResult = data.find(result => {
+        const address = result.address || {};
+        const country = (address.country || '').toLowerCase();
+        const countryCode = (result.address?.country_code || '').toLowerCase();
+        return country === 'pakistan' || countryCode === 'pk';
+      }) || data[0]; // Fallback to first result if filtering fails
+
       return {
-        latitude: parseFloat(result.lat),
-        longitude: parseFloat(result.lon),
-        name: result.display_name,
+        latitude: parseFloat(pakistanResult.lat),
+        longitude: parseFloat(pakistanResult.lon),
+        name: pakistanResult.display_name,
       };
     }
 
-    throw new Error("Location not found");
+    throw new Error("Location not found in Pakistan");
   } catch (error) {
     console.error("Location search error:", error);
     throw error;

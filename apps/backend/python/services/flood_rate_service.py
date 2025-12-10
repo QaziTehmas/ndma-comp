@@ -15,9 +15,9 @@ class FloodRateService:
     NOMINATIM_URL = "https://nominatim.openstreetmap.org/reverse"
     
     def __init__(self):
-        # Load flood_rate.json data
+        # Load flood_rate.json data from data/ directory
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        flood_rate_path = os.path.join(base_dir, 'flood_rate.json')
+        flood_rate_path = os.path.join(base_dir, 'data', 'flood_rate.json')
         
         with open(flood_rate_path, 'r', encoding='utf-8') as f:
             self.flood_data = json.load(f)

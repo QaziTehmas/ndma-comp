@@ -42,7 +42,7 @@ function PDMENavbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-neon group-hover:scale-110 transition-transform">
-              <Activity className="text-white w-6 h-6" />
+              <Activity className="text-text-primary w-6 h-6" />
             </div>
             <span className="text-2xl font-bold font-heading text-text-primary tracking-tight">
               PDME
@@ -126,7 +126,7 @@ function PDMENavbar() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-gray-300 hover:text-white"
+            className="md:hidden p-2 text-text-secondary hover:text-text-primary transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X /> : <Menu />}
@@ -159,12 +159,12 @@ function PDMENavbar() {
                   {link.label}
                 </NavLink>
               ))}
-              <div className="pt-4 border-t border-white/10">
-                <div className="text-sm font-medium text-gray-500 mb-2">History</div>
+              <div className="pt-4 border-t border-border-color">
+                <div className="text-sm font-medium text-text-muted mb-2">History</div>
                 <Link
                   to="/history/floods"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block py-2 text-gray-300 hover:text-primary"
+                  className="block py-2 text-text-secondary hover:text-primary transition-colors"
                 >
                   Floods History
                 </Link>

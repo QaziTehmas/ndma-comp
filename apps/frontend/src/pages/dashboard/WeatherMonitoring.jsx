@@ -93,30 +93,30 @@ const WeatherMonitoring = () => {
   }, []);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-5rem)] -m-6 w-[calc(100%+3rem)] bg-gray-950 overflow-hidden font-sans text-gray-100 selection:bg-blue-500/30">
+    <div className="flex flex-col h-[calc(100vh-5rem)] -m-6 w-[calc(100%+3rem)] bg-background overflow-hidden font-sans text-text-primary">
       {/* Premium Header */}
       <motion.header
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 px-6 py-3 flex items-center justify-between z-50 relative"
+        className="bg-background-light/80 backdrop-blur-md border-b border-border-color px-6 py-3 flex items-center justify-between z-50 relative"
       >
         <div className="flex items-center gap-4">
           <div className="relative">
-            <div className="absolute inset-0 bg-blue-500 blur-lg opacity-20 rounded-full"></div>
-            <Activity className="w-6 h-6 text-blue-400 relative z-10" />
+            <div className="absolute inset-0 bg-primary blur-lg opacity-20 rounded-full"></div>
+            <Activity className="w-6 h-6 text-primary relative z-10" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-white tracking-tight">Weather Monitoring <span className="text-blue-500">Pro</span></h1>
-            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Disaster Management System</p>
+            <h1 className="text-lg font-bold text-text-primary tracking-tight">Weather Monitoring <span className="text-primary">Pro</span></h1>
+            <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Disaster Management System</p>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
           {weatherLastUpdated && (
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-800 rounded-full border border-gray-700">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-background rounded-full border border-border-color">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-              <span className="text-xs text-gray-400 font-mono">
+              <span className="text-xs text-text-secondary font-mono">
                 LIVE: {new Date(weatherLastUpdated).toLocaleTimeString()}
               </span>
             </div>
@@ -154,7 +154,7 @@ const WeatherMonitoring = () => {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex-1 relative bg-gray-900 pb-2"
+            className="flex-1 relative bg-background-secondary pb-2"
           >
             <MapSelector
               onLocationSelect={handleLocationSelect}
@@ -163,7 +163,7 @@ const WeatherMonitoring = () => {
             />
 
             {/* Overlay Gradient for smooth transition to sidebar */}
-            <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-gray-900/50 to-transparent pointer-events-none z-[400]"></div>
+            <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-background-secondary/50 to-transparent pointer-events-none z-[400]"></div>
           </motion.div>
 
           {/* Bottom Charts Panel */}

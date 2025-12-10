@@ -32,7 +32,7 @@ const getAQIStyles = (color) => {
         purple: { color: 'text-purple-500', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
         maroon: { color: 'text-rose-900', bg: 'bg-rose-900/10', border: 'border-rose-900/20' }
     };
-    return styles[color] || { color: 'text-gray-500', bg: 'bg-gray-500/10', border: 'border-gray-500/20' };
+    return styles[color] || { color: 'text-text-muted', bg: 'bg-background-light/50', border: 'border-border-color' };
 };
 
 /**
@@ -76,7 +76,7 @@ const MetricCard = ({ icon: Icon, label, value, sublabel, color, delay, numericV
     };
 
     // Default to gray if undefined
-    const accentClass = colorMap[color] || 'group-hover:border-gray-500/50 text-gray-400 bg-gray-600/20 border-gray-500/10';
+    const accentClass = colorMap[color] || 'group-hover:border-primary/50 text-text-secondary bg-background-light/50 border-border-color';
 
     return (
         <motion.div
@@ -88,19 +88,19 @@ const MetricCard = ({ icon: Icon, label, value, sublabel, color, delay, numericV
             title={tooltip}
         >
             {/* Decorative background blob */}
-            <div className={`absolute -right-8 -top-8 w-24 h-24 rounded-full blur-2xl opacity-20 transition-opacity duration-500 group-hover:opacity-30 ${accentClass.split(' ')[1]?.replace('text-', 'bg-') || 'bg-gray-500'}`}></div>
+            <div className={`absolute -right-8 -top-8 w-24 h-24 rounded-full blur-2xl opacity-20 transition-opacity duration-500 group-hover:opacity-30 ${accentClass.split(' ')[1]?.replace('text-', 'bg-') || 'bg-primary'}`}></div>
 
             <div className="flex flex-col justify-between h-full relative z-10 gap-3">
                 <div className="flex justify-between items-start">
-                    <span className="text-[11px] uppercase tracking-wider font-bold text-gray-300/80">{label}</span>
+                    <span className="text-[11px] uppercase tracking-wider font-bold text-text-secondary">{label}</span>
                     <Icon className={`w-5 h-5 opacity-80 ${accentClass.split(' ')[1]}`} />
                 </div>
 
                 <div>
-                    <div className="text-2xl font-black text-white tracking-tight flex items-baseline gap-1">
+                    <div className="text-2xl font-black text-text-primary tracking-tight flex items-baseline gap-1">
                         <AnimatedNumber value={numericValue} suffix={value.replace(/[0-9.]/g, '')} />
                     </div>
-                    <span className="text-[10px] text-gray-400 font-medium block mt-1">{sublabel}</span>
+                    <span className="text-[10px] text-text-muted font-medium block mt-1">{sublabel}</span>
                 </div>
             </div>
         </motion.div>
@@ -252,18 +252,18 @@ const WeatherSidebar = ({
     // ... existing search logic ...
 
     return (
-        <div className="h-full flex flex-col bg-gray-900 border-r border-gray-800 shadow-2xl relative z-20">
+        <div className="h-full flex flex-col bg-background-secondary border-r border-border-color shadow-2xl relative z-20">
             {/* Search with Autocomplete */}
-            <div className="p-4 border-b border-gray-800 bg-gray-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-900/60 sticky top-0 z-10">
+            <div className="p-4 border-b border-border-color bg-background-secondary/95 backdrop-blur supports-[backdrop-filter]:bg-background-secondary/60 sticky top-0 z-10">
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="relative group"
                 >
                     {isSearching ? (
-                        <Loader2 className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-blue-500 animate-spin" />
+                        <Loader2 className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary animate-spin" />
                     ) : (
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-blue-400 transition-colors" />
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-primary transition-colors" />
                     )}
                     <input
                         ref={searchInputRef}
@@ -276,7 +276,7 @@ const WeatherSidebar = ({
                         onKeyDown={handleKeyDown}
                         onFocus={() => searchQuery.length > 0 && setShowDropdown(true)}
                         onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
-                        className="w-full pl-10 pr-10 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all shadow-inner"
+                        className="w-full pl-10 pr-10 py-2 bg-background border border-border-color rounded-xl text-text-primary placeholder-text-muted text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all shadow-inner"
                     />
                     {searchQuery && !isSearching && (
                         <button
@@ -284,7 +284,7 @@ const WeatherSidebar = ({
                                 setSearchQuery('');
                                 setShowDropdown(false);
                             }}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-700"
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors p-1 rounded-full hover:bg-background-light"
                             title="Clear search"
                         >
                             <X className="w-4 h-4" />
@@ -296,16 +296,16 @@ const WeatherSidebar = ({
                         <motion.div
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="absolute top-full left-0 right-0 mt-2 bg-gray-800 border border-gray-700 rounded-xl shadow-2xl overflow-hidden z-50 max-h-80 overflow-y-auto custom-scrollbar"
+                            className="absolute top-full left-0 right-0 mt-2 bg-background border border-border-color rounded-xl shadow-2xl overflow-hidden z-50 max-h-80 overflow-y-auto custom-scrollbar"
                         >
                             {isSearching ? (
-                                <div className="px-4 py-3 text-center text-gray-400 text-sm">
+                                <div className="px-4 py-3 text-center text-text-secondary text-sm">
                                     <Loader2 className="w-4 h-4 animate-spin mx-auto mb-1" />
                                     Searching...
                                 </div>
                             ) : filteredCities.length > 0 ? (
                                 <div>
-                                    <div className="px-3 py-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-wider bg-gray-800/50 border-b border-gray-700">
+                                    <div className="px-3 py-1.5 text-[10px] font-bold text-text-muted uppercase tracking-wider bg-background-light/50 border-b border-border-color">
                                         Search Results
                                     </div>
                                     {filteredCities.map((city, index) => (
@@ -313,24 +313,24 @@ const WeatherSidebar = ({
                                             key={`${city.name}-${index}`}
                                             onClick={() => handleCitySelect(city)}
                                             className={`w-full px-4 py-3 text-left transition-colors ${index === selectedIndex
-                                                ? 'bg-blue-600 text-white'
-                                                : 'bg-gray-800 text-gray-200 hover:bg-gray-700'
-                                                } ${index !== filteredCities.length - 1 ? 'border-b border-gray-700' : ''}`}
+                                                ? 'bg-primary text-text-primary'
+                                                : 'bg-background text-text-secondary hover:bg-background-light'
+                                                } ${index !== filteredCities.length - 1 ? 'border-b border-border-color' : ''}`}
                                         >
                                             <div className="flex items-center justify-between">
                                                 <div>
-                                                    <span className="font-medium text-white">{city.name}</span>
-                                                    <span className="text-xs ml-2 opacity-50 block text-gray-400">
+                                                    <span className="font-medium text-text-primary">{city.name}</span>
+                                                    <span className="text-xs ml-2 opacity-50 block text-text-muted">
                                                         {city.region}, {city.country}
                                                     </span>
                                                 </div>
-                                                <MapPin className="w-3 h-3 opacity-50 text-gray-400" />
+                                                <MapPin className="w-3 h-3 opacity-50 text-text-muted" />
                                             </div>
                                         </button>
                                     ))}
                                 </div>
                             ) : (
-                                <div className="px-4 py-6 text-center text-gray-400 text-sm">
+                                <div className="px-4 py-6 text-center text-text-secondary text-sm">
                                     {searchQuery.length < 2 ? 'Type to search cities...' : 'No matching cities found'}
                                 </div>
                             )}
@@ -352,11 +352,11 @@ const WeatherSidebar = ({
                                 <MapPin className="w-3 h-3" />
                                 Monitoring Location
                             </div>
-                            <h2 className="text-xl font-bold text-white leading-tight">{selectedLocation.name}</h2>
-                            <div className="text-gray-500 text-[10px] mt-0.5 font-mono">
+                            <h2 className="text-xl font-bold text-text-primary leading-tight">{selectedLocation.name}</h2>
+                            <div className="text-text-muted text-[10px] mt-0.5 font-mono">
                                 {selectedLocation.latitude.toFixed(4)}°N, {selectedLocation.longitude.toFixed(4)}°E
                             </div>
-                            <p className="text-[10px] text-gray-600 mt-1">Real-time weather and disaster data for this location</p>
+                            <p className="text-[10px] text-text-secondary mt-1">Real-time weather and disaster data for this location</p>
                         </motion.div>
                     )}
 
@@ -364,11 +364,11 @@ const WeatherSidebar = ({
                     {weatherData && (
                         <div className="space-y-2">
                             <div className="space-y-0.5">
-                                <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2">
+                                <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider flex items-center gap-2">
                                     <div className="w-1 h-1 rounded-full bg-blue-500 animate-pulse"></div>
                                     Current Weather
                                 </div>
-                                <p className="text-[10px] text-gray-600">Live conditions updated every 5 minutes</p>
+                                <p className="text-[10px] text-text-secondary">Live conditions updated every 5 minutes</p>
                             </div>
                             <div className="grid grid-cols-2 gap-3">
                                 <MetricCard
@@ -431,13 +431,13 @@ const WeatherSidebar = ({
                                     <div className={`text-[10px] font-bold ${getAQIStyles(airQuality.category?.color).color} mb-1 uppercase tracking-wider flex items-center gap-1.5`}>
                                         <Wind className="w-3 h-3" /> Air Quality
                                     </div>
-                                    <div className="text-3xl font-extrabold text-gray-100 mb-1">
+                                    <div className="text-3xl font-extrabold text-text-primary mb-1">
                                         {airQuality.aqi}
                                     </div>
-                                    <div className="text-sm font-bold text-gray-300 mb-0.5">
+                                    <div className="text-sm font-bold text-text-secondary mb-0.5">
                                         {airQuality.category?.level || 'Unknown'}
                                     </div>
-                                    <div className="text-[10px] text-gray-500">
+                                    <div className="text-[10px] text-text-muted">
                                         {airQuality.category?.description || 'Data unavailable'}
                                     </div>
                                 </div>
@@ -462,7 +462,7 @@ const WeatherSidebar = ({
                                     <div className="text-[10px] font-bold text-red-400 mb-0.5 uppercase tracking-wider flex items-center gap-1.5">
                                         Seismic Activity
                                     </div>
-                                    <div className="text-2xl font-extrabold text-white mb-0.5">
+                                    <div className="text-2xl font-extrabold text-text-primary mb-0.5">
                                         M <AnimatedNumber value={earthquakeSummary.mostRecent?.magnitude || 0} decimals={1} />
                                     </div>
                                     <div className="text-[10px] text-red-200/70 font-medium">
@@ -511,7 +511,7 @@ const WeatherSidebar = ({
                                     <div className="text-[10px] font-bold text-amber-400 mb-1 uppercase tracking-wider">
                                         Historical Risk Analysis
                                     </div>
-                                    <div className="text-xs text-gray-300 leading-relaxed whitespace-pre-line max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-amber-500/20">
+                                    <div className="text-xs text-text-secondary leading-relaxed whitespace-pre-line max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-amber-500/20">
                                         {riskSummary}
                                     </div>
                                 </div>
@@ -528,7 +528,7 @@ const WeatherSidebar = ({
                                 <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>
                                 Featured Cities
                             </div>
-                            <p className="text-[10px] text-gray-600">Quick access to major hubs</p>
+                            <p className="text-[10px] text-text-secondary">Quick access to major hubs</p>
                         </div>
 
                         <div className="space-y-2">
@@ -541,37 +541,37 @@ const WeatherSidebar = ({
                                         transition={{ delay: index * 0.05 }}
                                         whileHover={{ scale: 1.02, x: 2 }}
                                         onClick={() => handleCitySelect(city)}
-                                        className="w-full bg-gray-800/40 hover:bg-gray-800 border border-gray-700/50 hover:border-gray-600 rounded-xl p-3 text-left transition-all group relative overflow-hidden"
+                                        className="w-full bg-background/40 hover:bg-background border border-border-color/50 hover:border-primary/50 rounded-xl p-3 text-left transition-all group relative overflow-hidden"
                                     >
                                         <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 to-blue-500/0 group-hover:from-blue-500/5 group-hover:to-purple-500/5 transition-all duration-500"></div>
 
                                         <div className="flex items-center justify-between relative z-10">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-lg bg-gray-700/50 flex items-center justify-center text-xs font-bold text-gray-400 group-hover:text-blue-400 group-hover:bg-blue-500/10 transition-colors shadow-inner">
+                                                <div className="w-8 h-8 rounded-lg bg-background-light/50 flex items-center justify-center text-xs font-bold text-text-muted group-hover:text-primary group-hover:bg-primary/10 transition-colors shadow-inner">
                                                     {city.name.substring(0, 1)}
                                                 </div>
                                                 <div>
-                                                    <span className="font-bold text-gray-200 text-sm group-hover:text-white transition-colors">{city.name}</span>
-                                                    <span className="text-[10px] text-gray-500 block">{city.region}</span>
+                                                    <span className="font-bold text-text-secondary text-sm group-hover:text-text-primary transition-colors">{city.name}</span>
+                                                    <span className="text-[10px] text-text-muted block">{city.region}</span>
                                                 </div>
                                             </div>
 
                                             {city.weather && city.weather.current ? (
                                                 <div className="text-right">
-                                                    <span className="block font-black text-white text-lg leading-none">{Math.round(city.weather.current.temperature)}°</span>
-                                                    <span className="text-[10px] text-gray-400 font-medium block mt-0.5">
+                                                    <span className="block font-black text-text-primary text-lg leading-none">{Math.round(city.weather.current.temperature)}°</span>
+                                                    <span className="text-[10px] text-text-muted font-medium block mt-0.5">
                                                         {city.weather.current.weatherCode !== undefined ?
                                                             ['Clear', 'Cloudy', 'Rain', 'Snow'][Math.min(Math.floor(city.weather.current.weatherCode / 20), 3)] : 'Clear'}
                                                     </span>
                                                 </div>
                                             ) : (
-                                                <div className="animate-pulse w-8 h-4 bg-gray-700 rounded"></div>
+                                                <div className="animate-pulse w-8 h-4 bg-background-light rounded"></div>
                                             )}
                                         </div>
                                     </motion.button>
                                 ))
                             ) : (
-                                <div className="text-center py-8 text-gray-600">
+                                <div className="text-center py-8 text-text-secondary">
                                     <Loader2 className="w-5 h-5 mx-auto mb-2 animate-spin opacity-50" />
                                     <p className="text-xs">Loading cities...</p>
                                 </div>

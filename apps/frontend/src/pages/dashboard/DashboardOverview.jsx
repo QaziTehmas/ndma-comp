@@ -90,7 +90,7 @@ const DashboardOverview = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="text-white text-xl">Loading dashboard...</div>
+        <div className="text-text-primary text-xl">Loading dashboard...</div>
       </div>
     );
   }
@@ -235,7 +235,7 @@ const DashboardOverview = () => {
                     }`}>
                       {info.alert_level} Risk
                     </p>
-                    <p className="text-xs text-gray-400 mt-2">
+                    <p className="text-xs text-text-muted mt-2">
                       {(info.population_at_risk / 1000000).toFixed(1)}M at risk
                     </p>
                   </button>
@@ -248,25 +248,25 @@ const DashboardOverview = () => {
                   <h3 className="text-lg font-bold text-text-primary mb-3">{selectedProvince} - Details</h3>
                   <div className="space-y-2 text-sm">
                     <div>
-                      <span className="text-gray-400">Alert Level: </span>
+                      <span className="text-text-muted">Alert Level: </span>
                       <span className="font-semibold text-text-primary">
                         {ndma.provinces[selectedProvince].alert_level}
                       </span>
                     </div>
                     <div>
-                      <span className="text-gray-400">Population at Risk: </span>
+                      <span className="text-text-muted">Population at Risk: </span>
                       <span className="font-semibold text-text-primary">
                         {ndma.provinces[selectedProvince].population_at_risk.toLocaleString()}
                       </span>
                     </div>
                     <div>
-                      <span className="text-gray-400">Vulnerable Districts: </span>
+                      <span className="text-text-muted">Vulnerable Districts: </span>
                       <span className="text-text-primary">
                         {ndma.provinces[selectedProvince].vulnerable_districts.join(', ')}
                       </span>
                     </div>
                     <div>
-                      <span className="text-gray-400">High Risk Areas: </span>
+                      <span className="text-text-muted">High Risk Areas: </span>
                       <span className="text-text-primary">
                         {ndma.provinces[selectedProvince].high_risk_areas.join(', ')}
                       </span>
@@ -284,7 +284,7 @@ const DashboardOverview = () => {
             <div className="space-y-4">
               {/* National Contacts */}
               <div>
-                <h4 className="text-sm font-bold text-gray-400 mb-3 uppercase">National</h4>
+                <h4 className="text-sm font-bold text-text-muted mb-3 uppercase">National</h4>
                 <div className="space-y-2">
                   {contacts?.national && Object.entries(contacts.national).map(([name, number]) => (
                     <a
@@ -306,7 +306,7 @@ const DashboardOverview = () => {
 
               {/* Provincial Contacts */}
               <div>
-                <h4 className="text-sm font-bold text-gray-900 mb-3 uppercase">Provincial PDMAs</h4>
+                <h4 className="text-sm font-bold text-text-primary mb-3 uppercase">Provincial PDMAs</h4>
                 <div className="space-y-2">
                   {contacts?.provincial && Object.entries(contacts.provincial).map(([province, info]) => (
                     <div key={province} className="p-3 bg-background rounded-lg">

@@ -9,8 +9,6 @@ import io
 
 CACHE_FILE = "data/latest_data.json"
 
-CACHE_FILE = "data/latest_data.json"
-
 # --- HELPER: SIMULATED DATA (Fallback) ---
 def get_simulated_data(source_label="SIMULATED (Fallback)"):
     """

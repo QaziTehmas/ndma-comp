@@ -131,7 +131,7 @@ class FireRiskService:
         
         Args:
             input_data: Dictionary containing weather features from OpenMeteo:
-                - date: YYYY-MM-DD format
+                - date: YYYY-MM-DD format (REQUIRED)
                 - MAX_TEMP: Maximum temperature (Celsius)
                 - MIN_TEMP: Minimum temperature (Celsius)
                 - AVG_WIND_SPEED: Average wind speed (mph)
@@ -150,8 +150,31 @@ class FireRiskService:
             raise ValueError("Fire risk model not loaded. Please check model files.")
         
         try:
-            # Extract date
-            date_str = input_data.get('date', datetime.now().strftime('%Y-%m-%d'))
+            # Extract date - ensure it's in correct format
+            date_str = input_data.get('date')
+            if not date_str:
+                # Fallback: construct from year, month, day if date not provided
+                year = input_data.get('year')
+                month = input_data.get('month')
+                day = input_data.get('day')
+                if year and month and day:
+                    date_str = f"{year}-{month:02d}-{day:02d}"
+                else:
+                    date_str = datetime.now().strftime('%Y-%m-%d')
+            
+            location = input_data.get('location', 'N/A')
+            print(f"🔥 Fire Prediction - Date: {date_str}, Location: {location}")
+            print(f"🔥 Weather Data - Max Temp: {input_data.get('MAX_TEMP', 'N/A')}°C, "
+                  f"Min Temp: {input_data.get('MIN_TEMP', 'N/A')}°C, "
+                  f"Wind: {input_data.get('AVG_WIND_SPEED', 'N/A')} mph, "
+                  f"Precip: {input_data.get('PRECIPITATION', 'N/A')} in")
+            
+            # Print input data structure for debugging (production: remove or reduce)
+            import json
+            print(f"🔥 Input Data Keys ({len(input_data)} fields): {list(input_data.keys())}")
+            print(f"🔥 Input Data Sample (first 10 fields):")
+            sample_data = {k: v for i, (k, v) in enumerate(input_data.items()) if i < 10}
+            print(json.dumps(sample_data, indent=2, default=str))
             
             # Create DataFrame from input
             input_df = pd.DataFrame([input_data])
@@ -165,19 +188,16 @@ class FireRiskService:
             except KeyError as e:
                 missing_features = [f for f in self.features_list if f not in input_df.columns]
                 available_features = list(input_df.columns)
+                print(f"❌ Missing features: {missing_features}")
+                print(f"📋 Available features: {available_features}")
                 raise ValueError(
                     f"Missing required features: {missing_features}\n"
                     f"Available features: {available_features}"
                 )
             
             # Apply preprocessor (scaling/imputation)
-            # For fallback preprocessor (not pre-fitted), use fit_transform
-            # This won't be as accurate as the original preprocessor but allows the model to still work
             if hasattr(self, '_preprocessor_fitted') and not self._preprocessor_fitted:
-                # For single sample prediction, we need to handle this carefully
-                # Fill NaNs with median-like values manually for single sample
                 sample_values = sample_X.fillna(sample_X.median()).values
-                # Simple normalization (rough approximation)
                 from sklearn.preprocessing import StandardScaler
                 scaler = StandardScaler()
                 sample_X_p = scaler.fit_transform(sample_values)
@@ -198,6 +218,10 @@ class FireRiskService:
                 risk_level = "Moderate Fire Risk"
             else:
                 risk_level = "Low Fire Risk"
+            
+            print(f"🔥 Prediction Result - Date: {date_str}, Location: {location}, "
+                  f"Probability: {prediction_prob:.4f} ({prediction_prob*100:.2f}%), "
+                  f"Risk Level: {risk_level}")
             
             return {
                 'probability': prediction_prob,

@@ -44,6 +44,9 @@ class FireWeatherService:
         today = datetime.now()
         today_date = today.replace(hour=0, minute=0, second=0, microsecond=0)
         
+        print(f"🌤️ Fetching fire weather - Date: {target_date.strftime('%Y-%m-%d')}, "
+              f"Location: ({latitude}, {longitude})")
+        
         # Determine if we're fetching historical or forecast data
         is_future = target_date > today_date
         
@@ -141,6 +144,10 @@ class FireWeatherService:
                 # Yesterday not in data, use today's values as estimate
                 lagged_precip_in = precipitation_in
                 lagged_wind_mph = avg_wind_speed_mph
+            
+            print(f"🌤️ Weather Data Retrieved - "
+                  f"Max Temp: {temp_max}°C, Min Temp: {temp_min}°C, "
+                  f"Wind: {wind_mean} km/h, Precip: {precipitation_mm} mm")
             
             return {
                 "date": target_date_str,

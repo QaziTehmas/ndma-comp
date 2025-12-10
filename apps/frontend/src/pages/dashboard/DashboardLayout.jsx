@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   CloudRain,
@@ -15,12 +15,12 @@ import {
   History,
   Zap,
   Sun,
-  Moon
-} from 'lucide-react';
-import { motion } from 'framer-motion';
-import { clsx } from 'clsx';
-import ChatBot from '../../components/ChatBot';
-import { useTheme } from '../../context/ThemeContext';
+  Moon,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { clsx } from "clsx";
+import ChatBot from "../../components/ChatBot";
+import { useTheme } from "../../context/ThemeContext";
 
 const DashboardLayout = () => {
   const location = useLocation();
@@ -29,24 +29,51 @@ const DashboardLayout = () => {
   const { theme, toggleTheme } = useTheme();
 
   const sidebarItems = [
-    { path: '/dashboard', label: 'Overview', icon: <LayoutDashboard className="w-5 h-5" /> },
-    { path: '/dashboard/weather', label: 'Weather', icon: <CloudRain className="w-5 h-5" /> },
-    { path: '/dashboard/water-analysis', label: 'Water Levels', icon: <Droplets className="w-5 h-5" /> },
-    { path: '/dashboard/fire-risk', label: 'Fire Risk', icon: <Flame className="w-5 h-5" /> },
-    { path: '/dashboard/flood-prediction', label: 'Flood AI', icon: <Droplets className="w-5 h-5" /> },
-    { path: '/dashboard/analytics', label: 'Analytics', icon: <BarChart3 className="w-5 h-5" /> },
+    {
+      path: "/dashboard",
+      label: "Overview",
+      icon: <LayoutDashboard className="w-5 h-5" />,
+    },
+    {
+      path: "/dashboard/weather",
+      label: "Weather",
+      icon: <CloudRain className="w-5 h-5" />,
+    },
+    {
+      path: "/dashboard/water-analysis",
+      label: "Water Levels",
+      icon: <Droplets className="w-5 h-5" />,
+    },
+    {
+      path: "/dashboard/fire-risk",
+      label: "Fire Risk",
+      icon: <Flame className="w-5 h-5" />,
+    },
+    {
+      path: "/dashboard/flood-prediction",
+      label: "Flood AI",
+      icon: <Droplets className="w-5 h-5" />,
+    },
+    {
+      path: "/dashboard/analytics",
+      label: "Analytics",
+      icon: <BarChart3 className="w-5 h-5" />,
+    },
   ];
 
   const navigationItems = [
-    { path: '/', label: 'Home', icon: <Home className="w-5 h-5" /> },
-    { path: '/about', label: 'About Us', icon: <Users className="w-5 h-5" /> },
-    { path: '/history/floods', label: 'Floods History', icon: <History className="w-5 h-5" /> },
+    { path: "/", label: "Home", icon: <Home className="w-5 h-5" /> },
+    { path: "/about", label: "About Us", icon: <Users className="w-5 h-5" /> },
+    {
+      path: "/history/floods",
+      label: "Floods History",
+      icon: <History className="w-5 h-5" />,
+    },
     // { path: '/history/earthquakes', label: 'Earthquake History', icon: <Zap className="w-5 h-5" /> },
   ];
 
   return (
     <div className="flex min-h-screen bg-background dashboard-theme">
-
       {/* Sidebar */}
       <aside
         className={clsx(
@@ -56,55 +83,44 @@ const DashboardLayout = () => {
         onMouseEnter={() => !pinned && setCollapsed(false)}
         onMouseLeave={() => !pinned && setCollapsed(true)}
       >
-        {/* Header with Toggle and Pin Buttons */}
-        <div className="flex items-end justify-end p-3 gap-3">
-          {/* <button
-            onClick={() => {
-              if (!collapsed) {
-                setPinned(false);
-              }
-              setCollapsed(!collapsed);
-            }}
-            className="hover:bg-card-bg/50 p-1 rounded-lg transition-colors"
-          >
-            {collapsed ? <Menu size={20} /> : <ChevronLeft size={20} />}
-          </button> */}
-          {!collapsed && (
-            <button
-              onClick={toggleTheme}
-              className="p-1.5 rounded-lg bg-card-bg/50 hover:bg-card-bg transition-colors"
-              title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-            >
-              {theme === 'light' ? (
-                <Moon size={18} className="w-4 h-4 text-text-primary" />
-              ) : (
-                <Sun size={18} className="w-4 h-4 text-text-primary" />
-              )}
-            </button>
-          )}
-
-          {!collapsed && (
-            <button
-              onClick={() => setPinned(!pinned)}
-              className={clsx(
-                "hover:bg-card-bg/50 p-1 rounded-lg transition-colors",
-                pinned && "text-primary"
-              )}
-              title={pinned ? "Unpin sidebar" : "Pin sidebar"}
-            >
-              {pinned ? <Pin size={18} /> : <PinOff size={18} />}
-            </button>
-          )}
-          
-        </div>
-
         {/* Menu Section - Top */}
-        <div className="p-4">
-          {!collapsed && (
-            <h2 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-6 font-heading">
+        <div className="p-6 flex-1 flex flex-col">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xs font-bold text-text-muted uppercase tracking-wider font-heading py-1.5">
               Menu
             </h2>
-          )}
+
+            <div className="flex items-center gap-3">
+              {!collapsed && (
+                <button
+                  onClick={toggleTheme}
+                  className="p-1.5 rounded-lg bg-card-bg/50 hover:bg-card-bg transition-colors"
+                  title={`Switch to ${
+                    theme === "light" ? "dark" : "light"
+                  } mode`}
+                >
+                  {theme === "light" ? (
+                    <Moon size={18} className="w-4 h-4 text-text-primary" />
+                  ) : (
+                    <Sun size={18} className="w-4 h-4 text-text-primary" />
+                  )}
+                </button>
+              )}
+
+              {!collapsed && (
+                <button
+                  onClick={() => setPinned(!pinned)}
+                  className={clsx(
+                    "hover:bg-card-bg/50 p-1 rounded-lg transition-colors",
+                    pinned && "text-primary"
+                  )}
+                  title={pinned ? "Unpin sidebar" : "Pin sidebar"}
+                >
+                  {pinned ? <Pin size={18} /> : <PinOff size={18} />}
+                </button>
+              )}
+            </div>
+          </div>
 
           <nav className="space-y-2">
             {sidebarItems.map((item) => {
@@ -114,27 +130,47 @@ const DashboardLayout = () => {
                 <Link key={item.path} to={item.path} className="relative block">
                   <div
                     className={clsx(
-                      "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 relative z-10",
-                      collapsed && "justify-center px-2",
+                      "group flex items-center px-4 py-3 rounded-xl transition-all duration-200 relative z-10",
+                      collapsed ? "justify-center px-3" : "gap-3",
                       isActive
                         ? "text-text-primary"
                         : "text-text-secondary hover:text-text-primary hover:bg-card-bg/50"
                     )}
                   >
-                    <div className={collapsed ? "scale-125 py-2" : ""}>
+                    {/* Icon wrapper stays same size */}
+                    <div
+                      className={clsx(
+                        "flex items-center justify-center transition-transform duration-200",
+                        collapsed ? "scale-125" : "scale-100"
+                      )}
+                    >
                       {item.icon}
                     </div>
-                    {!collapsed && (
-                      <span className="font-medium font-body">{item.label}</span>
-                    )}
+
+                    {/* Label only fades + shrinks away */}
+                    <span
+                      className={clsx(
+                        "font-medium font-body whitespace-nowrap transition-all duration-200",
+                        collapsed
+                          ? "opacity-0 pointer-events-none w-0 scale-90"
+                          : "opacity-100 w-auto scale-100"
+                      )}
+                    >
+                      {item.label}
+                    </span>
                   </div>
 
                   {isActive && (
                     <motion.div
                       layoutId="sidebar-active"
-                      className="absolute inset-0 bg-gradient-to-r from-primary/20 to-blue-600/20 border border-primary/30 rounded-xl shadow-neon"
+                      className="absolute inset-0 bg-gradient-to-r from-primary/20 to-blue-600/20 
+      border border-primary/30 rounded-xl shadow-neon"
                       initial={false}
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 30,
+                      }}
                     />
                   )}
                 </Link>
@@ -150,13 +186,11 @@ const DashboardLayout = () => {
 
         {/* Pages Section - Bottom */}
         <div className="p-4 mt-auto">
-          {!collapsed && (
-            <div className="flex items-center justify-between mb-4 px-2">
-              <h2 className="text-xs font-bold text-gray-500 uppercase tracking-wider font-heading">
-                Pages
-              </h2>
-            </div>
-          )}
+          <div className="flex items-center justify-between mb-4 px-2">
+            <h2 className="text-xs font-bold text-text-muted uppercase tracking-wider font-heading py-1.5">
+              Pages
+            </h2>
+          </div>
 
           <nav className="space-y-2">
             {navigationItems.map((item) => {
@@ -166,27 +200,47 @@ const DashboardLayout = () => {
                 <Link key={item.path} to={item.path} className="relative block">
                   <div
                     className={clsx(
-                      "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 relative z-10",
-                      collapsed && "justify-center px-2",
+                      "flex items-center px-4 py-3 rounded-xl transition-all duration-200 relative z-10",
+                      collapsed ? "justify-center px-3" : "gap-3",
                       isActive
                         ? "text-text-primary"
                         : "text-text-secondary hover:text-text-primary hover:bg-card-bg/50"
                     )}
                   >
-                    <div className={collapsed ? "scale-125 py-2" : ""}>
+                    {/* ICON */}
+                    <div
+                      className={clsx(
+                        "flex items-center justify-center transition-transform duration-200",
+                        collapsed ? "scale-125" : "scale-100"
+                      )}
+                    >
                       {item.icon}
                     </div>
-                    {!collapsed && (
-                      <span className="font-medium font-body">{item.label}</span>
-                    )}
+
+                    {/* LABEL */}
+                    <span
+                      className={clsx(
+                        "font-medium font-body whitespace-nowrap transition-all duration-200",
+                        collapsed
+                          ? "opacity-0 w-0 pointer-events-none scale-90"
+                          : "opacity-100 w-auto scale-100"
+                      )}
+                    >
+                      {item.label}
+                    </span>
                   </div>
 
+                  {/* ACTIVE INDICATOR */}
                   {isActive && (
                     <motion.div
                       layoutId="sidebar-navigation-active"
                       className="absolute inset-0 bg-gradient-to-r from-primary/20 to-blue-600/20 border border-primary/30 rounded-xl shadow-neon"
                       initial={false}
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 30,
+                      }}
                     />
                   )}
                 </Link>

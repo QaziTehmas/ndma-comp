@@ -170,9 +170,9 @@ export function getWeatherCondition(weatherCode) {
 }
 
 /**
- * Search for cities using Open-Meteo Geocoding API with explicit Pakistan biasing
+ * Search for cities using Open-Meteo Geocoding API - LIMITED TO PAKISTAN ONLY
  * @param {string} query - City name to search for
- * @returns {Promise<Array>} - List of matching cities
+ * @returns {Promise<Array>} - List of matching cities in Pakistan
  */
 export async function searchCities(query) {
   if (!query || query.length < 2) return [];
@@ -180,7 +180,7 @@ export async function searchCities(query) {
   try {
     const params = {
       name: query,
-      count: 10,
+      count: 20, // Get more results to filter
       language: 'en',
       format: 'json'
     };
@@ -189,14 +189,23 @@ export async function searchCities(query) {
 
     if (!data.results) return [];
 
-    return data.results.map(city => ({
-      name: city.name,
-      latitude: city.latitude,
-      longitude: city.longitude,
-      country: city.country,
-      region: city.admin1 || city.country,
-      weather: null // Weather will be fetched when selected
-    }));
+    // Filter to only Pakistan locations
+    const pakistanCities = data.results
+      .filter(city => {
+        const country = (city.country || '').toLowerCase();
+        const countryCode = (city.country_code || '').toLowerCase();
+        return country === 'pakistan' || countryCode === 'pk';
+      })
+      .map(city => ({
+        name: city.name,
+        latitude: city.latitude,
+        longitude: city.longitude,
+        country: city.country,
+        region: city.admin1 || city.country,
+        weather: null // Weather will be fetched when selected
+      }));
+
+    return pakistanCities;
   } catch (error) {
     console.error('Error searching cities:', error);
     return [];

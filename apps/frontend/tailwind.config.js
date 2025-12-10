@@ -16,8 +16,11 @@ export default {
         background: {
           DEFAULT: 'var(--bg-primary)',
           light: 'var(--bg-secondary)',
-          // lighter: 'var(--bg-tertiary)',
-          lighter: '#E5E5E5',
+          lighter: 'var(--bg-tertiary)',
+        },
+        border: {
+          DEFAULT: 'var(--border-color)',
+          sidebar: 'var(--sidebar-border)',
         },
         primary: {
           DEFAULT: 'var(--primary-color)',

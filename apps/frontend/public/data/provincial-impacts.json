@@ -67,18 +67,5 @@
       "Ghizer"
     ],
     "riskLevel": "High (GLOFs)"
-  },
-  {
-    "province": "AJK",
-    "totalEvents": 10,
-    "totalAffected": 600000,
-    "totalCasualties": 280,
-    "economicLoss": 0.9,
-    "highRiskDistricts": [
-      "Muzaffarabad",
-      "Neelum",
-      "Poonch"
-    ],
-    "riskLevel": "Medium"
   }
 ]
