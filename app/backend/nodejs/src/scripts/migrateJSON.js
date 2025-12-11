@@ -12,7 +12,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Path to frontend public data directory
-const DATA_DIR = join(__dirname, '../../../frontend/public/data');
+// From: app/backend/nodejs/src/scripts/migrateJSON.js
+// To: app/frontend/public/data
+// Go up 4 levels: scripts -> src -> nodejs -> backend -> root
+const DATA_DIR = join(__dirname, '../../../../frontend/public/data');
 
 /**
  * Read and parse JSON file
