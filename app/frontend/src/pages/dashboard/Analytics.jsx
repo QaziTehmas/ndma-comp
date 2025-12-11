@@ -37,7 +37,6 @@ const Analytics = () => {
 
   const { theme } = useTheme();
   
-  // Theme-aware chart colors
   const isDark = theme === 'dark';
   const chartTextColor = isDark ? '#94a3b8' : '#64748b';
   const chartGridColor = isDark ? 'rgba(148, 163, 184, 0.15)' : 'rgba(148, 163, 184, 0.1)';

@@ -7,7 +7,12 @@ Uses flood_rate.json data with district-level flood rates for Pakistan.
 import json
 import os
 import requests
+import certifi
 from typing import Optional, Dict
+
+# Fix SSL certificate issue - use certifi bundle instead of PostgreSQL bundle
+os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
+os.environ['SSL_CERT_FILE'] = certifi.where()
 
 class FloodRateService:
     """Service to lookup location_flood_rate based on coordinates"""

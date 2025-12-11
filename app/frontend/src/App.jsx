@@ -12,6 +12,7 @@ import WeatherMonitoring from './pages/dashboard/WeatherMonitoring';
 import WaterAnalysis from './pages/dashboard/WaterAnalysis';
 import FireRisk from './pages/dashboard/FireRisk';
 import FloodPrediction from './pages/dashboard/FloodPrediction';
+import EmergencyOperations from './pages/dashboard/EmergencyOperations';
 import AboutUs from './pages/AboutUs';
 import FloodsHistory from './pages/FloodsHistory';
 import EarthquakeHistory from './pages/EarthquakeHistory';
@@ -36,6 +37,7 @@ function AppContent() {
           <Route path="flood-prediction" element={<FloodPrediction />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="water-analysis" element={<WaterAnalysis />} />
+          <Route path="emergency-operations" element={<EmergencyOperations />} />
         </Route>
 
         {/* About Us */}

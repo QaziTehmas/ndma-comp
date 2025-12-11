@@ -211,3 +211,112 @@ model NDMAData {
   @@map("ndma_data")
 }
 
+// Active Incidents - Real-time Monsoon 2025 incidents
+model ActiveIncident {
+  id              String   @id // e.g., "INC-2025-001"
+  type            String   // 'Riverine Flood', 'Flash Flood', 'Urban Flooding', 'GLOF'
+  province        String
+  district        String
+  severity        String   // 'Critical', 'High', 'Medium', 'Low'
+  status          String   // 'Active', 'Monitoring', 'Resolved'
+  affected        Int      @default(0)
+  casualties      Int      @default(0)
+  injured         Int      @default(0)
+  evacuated       Int      @default(0)
+  responseTeams   Int      @default(0) @map("response_teams")
+  reliefCamps     Int      @default(0) @map("relief_camps")
+  latitude        Decimal  @db.Decimal(10, 8)
+  longitude       Decimal  @db.Decimal(11, 8)
+  startDate       DateTime @map("start_date")
+  lastUpdate      DateTime @map("last_update")
+  description     String?  @db.Text
+  incidentCommander String? @map("incident_commander")
+  responseActions Json?    @map("response_actions") // Array of strings
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([province])
+  @@index([district])
+  @@index([status])
+  @@index([severity])
+  @@index([type])
+  @@map("active_incidents")
+}
+
+// Response Teams - Deployed NDMA/PDMA response teams
+model ResponseTeam {
+  id              String   @id // e.g., "RT-PB-001"
+  name            String
+  province        String
+  currentLocation String   @map("current_location")
+  status          String   // 'Deployed', 'Active', 'Standby', 'Returned'
+  personnel       Int
+  equipment       Json     // Array of equipment strings
+  mission         String?
+  latitude        Decimal  @db.Decimal(10, 8)
+  longitude       Decimal  @db.Decimal(11, 8)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([province])
+  @@index([status])
+  @@index([currentLocation])
+  @@map("response_teams")
+}
+
+// Provincial Vulnerabilities - Monsoon 2025 risk assessment
+model ProvincialVulnerability {
+  id                Int      @id @default(autoincrement())
+  province          String   @unique
+  riskLevel         String   @map("risk_level") // 'Very High', 'High', 'Medium', 'Low'
+  vulnerableDistricts Int     @map("vulnerable_districts")
+  rainfallOutlook   String?  @map("rainfall_outlook") @db.Text
+  floodTypes        Json     @map("flood_types") // Array of strings
+  keyThreats        Json     @map("key_threats") // Array of strings
+  highRiskDistricts Json     @map("high_risk_districts") // Array of strings
+  pdmaContact       Json     @map("pdma_contact") // Object with name, phone, email, eoc
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("provincial_vulnerabilities")
+}
+
+// NDMA Warehouses - Relief stock warehouses
+model NDMAWarehouse {
+  id            String   @id // e.g., "WH-ISB"
+  name          String
+  location      String
+  type          String   // 'Central', 'Regional'
+  latitude      Decimal  @db.Decimal(10, 8)
+  longitude     Decimal  @db.Decimal(11, 8)
+  capacity      String?
+  currentStock  Json     @map("current_stock") // Object with stock items
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@index([location])
+  @@index([type])
+  @@map("ndma_warehouses")
+}
+
+// High Risk Districts - District-level vulnerability tracking
+model HighRiskDistrict {
+  id              Int      @id @default(autoincrement())
+  district        String
+  province        String
+  floodType       String   @map("flood_type") // 'Riverine', 'Flash', 'Urban', 'GLOF'
+  riskLevel       String   @map("risk_level") // 'Very High', 'High', 'Medium'
+  riskFactors     Json?    @map("risk_factors") // Array of risk factors
+  earlyWarningStatus String? @map("early_warning_status") // 'Active', 'Monitoring', 'Inactive'
+  latitude        Decimal? @db.Decimal(10, 8)
+  longitude       Decimal? @db.Decimal(11, 8)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@unique([district, province])
+  @@index([province])
+  @@index([floodType])
+  @@index([riskLevel])
+  @@map("high_risk_districts")
+}
+

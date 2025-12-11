@@ -15,10 +15,12 @@ from services.weather_service import get_weather_service
 from services.flood_rate_service import get_flood_rate_service
 from services.fire_risk_service import get_fire_risk_service
 from services.fire_weather_service import get_fire_weather_service
+from services.database_service import get_database_service
 import uvicorn
 from dotenv import load_dotenv
 import os
 from services.chat_engine import chat_engine
+from datetime import datetime
 
 load_dotenv()
 
@@ -180,7 +182,38 @@ def predict_flood(request: FloodPredictionRequest):
         prediction_service = get_prediction_service()
         result = prediction_service.predict(weather_data)
         
-        # 4. Include weather data and flood rate info in response for transparency
+        # 4. Store in database (non-blocking, errors won't break prediction)
+        try:
+            db_service = get_database_service()
+            prediction_date = datetime(request.year, request.month, request.day)
+            
+            # Store weather data
+            db_service.store_weather_data(
+                weather_data=weather_data,
+                location=request.location,
+                latitude=request.latitude,
+                longitude=request.longitude,
+                date=prediction_date
+            )
+            
+            # Store prediction
+            db_service.store_prediction(
+                prediction_type='flood',
+                location=request.location,
+                latitude=request.latitude,
+                longitude=request.longitude,
+                prediction_date=prediction_date,
+                probability=result['flood_probability'],
+                prediction_value=result['flood_prediction'],
+                weather_data=weather_data,
+                features=weather_data,  # Store all features
+                model_version='flood_prediction_model_improved.pkl'
+            )
+        except Exception as db_error:
+            # Log but don't fail the prediction
+            print(f"⚠️ Database storage error (prediction still successful): {db_error}")
+        
+        # 5. Include weather data and flood rate info in response for transparency
         result["weather_data"] = weather_data
         result["flood_rate_info"] = flood_rate_info
         
@@ -259,7 +292,38 @@ def predict_flood_current(request: FloodPredictionRequest):
         prediction_service = get_prediction_service()
         result = prediction_service.predict(weather_data)
         
-        # 4. Include weather data and flood rate info in response
+        # 4. Store in database (non-blocking, errors won't break prediction)
+        try:
+            db_service = get_database_service()
+            prediction_date = datetime(today.year, today.month, today.day)
+            
+            # Store weather data
+            db_service.store_weather_data(
+                weather_data=weather_data,
+                location=request.location,
+                latitude=request.latitude,
+                longitude=request.longitude,
+                date=prediction_date
+            )
+            
+            # Store prediction
+            db_service.store_prediction(
+                prediction_type='flood',
+                location=request.location,
+                latitude=request.latitude,
+                longitude=request.longitude,
+                prediction_date=prediction_date,
+                probability=result['flood_probability'],
+                prediction_value=result['flood_prediction'],
+                weather_data=weather_data,
+                features=weather_data,  # Store all features
+                model_version='flood_prediction_model_improved.pkl'
+            )
+        except Exception as db_error:
+            # Log but don't fail the prediction
+            print(f"⚠️ Database storage error (prediction still successful): {db_error}")
+        
+        # 5. Include weather data and flood rate info in response
         result["weather_data"] = weather_data
         result["flood_rate_info"] = flood_rate_info
         result["is_current"] = True
@@ -334,7 +398,47 @@ def predict_fire(request: FirePredictionRequest):
         fire_risk_service = get_fire_risk_service()
         result = fire_risk_service.predict(weather_data)
         
-        # 3. Include weather data in response for transparency
+        # 3. Store in database (non-blocking, errors won't break prediction)
+        try:
+            db_service = get_database_service()
+            prediction_date = datetime(request.year, request.month, request.day)
+            
+            # Store weather data (convert fire weather format to standard format)
+            weather_for_db = {
+                'temperature_mean': weather_data.get('MAX_TEMP'),  # Use max temp as mean
+                'precipitation_sum': weather_data.get('PRECIPITATION'),
+                'relativehumidity_2m_mean': None,  # Fire weather doesn't include humidity
+                'windspeed_10m_max': weather_data.get('AVG_WIND_SPEED'),
+                'surface_pressure_mean': None,  # Fire weather doesn't include pressure
+                'et0_fao_evapotranspiration': None,  # Fire weather doesn't include evapotranspiration
+            }
+            
+            db_service.store_weather_data(
+                weather_data=weather_for_db,
+                location=request.location,
+                latitude=request.latitude,
+                longitude=request.longitude,
+                date=prediction_date
+            )
+            
+            # Store prediction
+            db_service.store_prediction(
+                prediction_type='fire',
+                location=request.location,
+                latitude=request.latitude,
+                longitude=request.longitude,
+                prediction_date=prediction_date,
+                probability=result['probability'],
+                prediction_value=1 if result['fire_risk'] else 0,
+                weather_data=weather_data,
+                features=weather_data,  # Store all features
+                model_version='xgb_wildfire_model.json'
+            )
+        except Exception as db_error:
+            # Log but don't fail the prediction
+            print(f"⚠️ Database storage error (prediction still successful): {db_error}")
+        
+        # 4. Include weather data in response for transparency
         result["weather_data"] = weather_data
         
         return result
@@ -401,7 +505,47 @@ def predict_fire_current(request: FirePredictionRequest):
         fire_risk_service = get_fire_risk_service()
         result = fire_risk_service.predict(weather_data)
         
-        # 3. Include weather data in response
+        # 3. Store in database (non-blocking, errors won't break prediction)
+        try:
+            db_service = get_database_service()
+            prediction_date = datetime(today.year, today.month, today.day)
+            
+            # Store weather data (convert fire weather format to standard format)
+            weather_for_db = {
+                'temperature_mean': weather_data.get('MAX_TEMP'),  # Use max temp as mean
+                'precipitation_sum': weather_data.get('PRECIPITATION'),
+                'relativehumidity_2m_mean': None,  # Fire weather doesn't include humidity
+                'windspeed_10m_max': weather_data.get('AVG_WIND_SPEED'),
+                'surface_pressure_mean': None,  # Fire weather doesn't include pressure
+                'et0_fao_evapotranspiration': None,  # Fire weather doesn't include evapotranspiration
+            }
+            
+            db_service.store_weather_data(
+                weather_data=weather_for_db,
+                location=request.location,
+                latitude=request.latitude,
+                longitude=request.longitude,
+                date=prediction_date
+            )
+            
+            # Store prediction
+            db_service.store_prediction(
+                prediction_type='fire',
+                location=request.location,
+                latitude=request.latitude,
+                longitude=request.longitude,
+                prediction_date=prediction_date,
+                probability=result['probability'],
+                prediction_value=1 if result['fire_risk'] else 0,
+                weather_data=weather_data,
+                features=weather_data,  # Store all features
+                model_version='xgb_wildfire_model.json'
+            )
+        except Exception as db_error:
+            # Log but don't fail the prediction
+            print(f"⚠️ Database storage error (prediction still successful): {db_error}")
+        
+        # 4. Include weather data in response
         result["weather_data"] = weather_data
         result["is_current"] = True
         

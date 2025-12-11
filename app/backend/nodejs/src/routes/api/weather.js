@@ -30,5 +30,42 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// Store weather data (called from Python backend)
+router.post('/', async (req, res, next) => {
+  try {
+    const {
+      time,
+      location,
+      latitude,
+      longitude,
+      temperature,
+      precipitation,
+      humidity,
+      windSpeed,
+      pressure,
+      evapotranspiration,
+    } = req.body;
+
+    const weatherData = await prisma.weatherData.create({
+      data: {
+        time: new Date(time),
+        location,
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude),
+        temperature: temperature ? parseFloat(temperature) : null,
+        precipitation: precipitation ? parseFloat(precipitation) : null,
+        humidity: humidity ? parseFloat(humidity) : null,
+        windSpeed: windSpeed ? parseFloat(windSpeed) : null,
+        pressure: pressure ? parseFloat(pressure) : null,
+        evapotranspiration: evapotranspiration ? parseFloat(evapotranspiration) : null,
+      },
+    });
+
+    res.status(201).json(weatherData);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
 

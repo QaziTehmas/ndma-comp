@@ -1,4 +1,5 @@
 import requests
+import certifi
 import pdfplumber
 import re
 import os
@@ -6,6 +7,10 @@ import json
 import random
 from datetime import datetime, timedelta
 import io
+
+# Fix SSL certificate issue - use certifi bundle instead of PostgreSQL bundle
+os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
+os.environ['SSL_CERT_FILE'] = certifi.where()
 
 CACHE_FILE = "data/latest_data.json"
 

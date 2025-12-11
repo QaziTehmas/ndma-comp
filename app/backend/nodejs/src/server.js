@@ -9,6 +9,7 @@ import weatherRoutes from './routes/api/weather.js';
 import predictionRoutes from './routes/api/predictions.js';
 import emergencyRoutes from './routes/api/emergency.js';
 import reliefRoutes from './routes/api/relief.js';
+import emergencyOperationsRoutes from './routes/api/emergency-operations.js';
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/api/weather', weatherRoutes);
 app.use('/api/predictions', predictionRoutes);
 app.use('/api/emergency', emergencyRoutes);
 app.use('/api/relief', reliefRoutes);
+app.use('/api/emergency-operations', emergencyOperationsRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -47,10 +49,10 @@ app.use(errorHandler);
 // Start server
 const PORT = config.port;
 app.listen(PORT, () => {
-  console.log(`🚀 PDME Backend Server running on http://localhost:${PORT}`);
-  console.log(`📊 Environment: ${config.nodeEnv}`);
-  console.log(`🔗 Frontend URL: ${config.frontendUrl}`);
-  console.log(`🐍 Python Backend: ${config.pythonBackendUrl}`);
+  console.log(`PDME Backend Server running on http://localhost:${PORT}`);
+  console.log(`Environment: ${config.nodeEnv}`);
+  console.log(`Frontend URL: ${config.frontendUrl}`);
+  console.log(`Python Backend: ${config.pythonBackendUrl}`);
 });
 
 export default app;

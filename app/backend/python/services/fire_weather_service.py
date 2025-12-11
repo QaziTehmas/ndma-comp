@@ -5,8 +5,14 @@ Calculates the specific parameters needed by the fire risk model.
 """
 
 import requests
+import certifi
+import os
 from datetime import datetime, timedelta
 from typing import Dict
+
+# Fix SSL certificate issue - use certifi bundle instead of PostgreSQL bundle
+os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
+os.environ['SSL_CERT_FILE'] = certifi.where()
 
 class FireWeatherService:
     """Service to fetch weather data from OpenMeteo for fire risk prediction"""

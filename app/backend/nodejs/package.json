@@ -6,14 +6,15 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch src/server.js",
-    "start": "node src/server.js",
+    "start": "nodemon src/server.js",
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
     "migrate:reset": "prisma migrate reset",
     "generate": "prisma generate",
     "studio": "prisma studio",
     "seed": "node src/scripts/seed.js",
-    "migrate:json": "node src/scripts/migrateJSON.js"
+    "migrate:json": "node src/scripts/migrateJSON.js",
+    "migrate:emergency": "node src/scripts/migrateEmergencyOperations.js"
   },
   "keywords": ["pdme", "disaster", "management"],
   "author": "",

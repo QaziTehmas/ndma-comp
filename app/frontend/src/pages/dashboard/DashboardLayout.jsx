@@ -16,6 +16,7 @@ import {
   Zap,
   Sun,
   Moon,
+  AlertTriangle,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { clsx } from "clsx";
@@ -58,6 +59,11 @@ const DashboardLayout = () => {
       path: "/dashboard/analytics",
       label: "Analytics",
       icon: <BarChart3 className="w-5 h-5" />,
+    },
+    {
+      path: "/dashboard/emergency-operations",
+      label: "Emergency Ops",
+      icon: <AlertTriangle className="w-5 h-5" />,
     },
   ];
 
