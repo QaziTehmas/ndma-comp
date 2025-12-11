@@ -1,0 +1,198 @@
+/* FloodsHistory.css */
+
+.floods-history-page {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  padding-top: 6rem;
+  padding-bottom: 3rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .floods-history-page {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .floods-history-page {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.floods-container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Loading and Error States */
+.floods-loading {
+  padding: 1.5rem;
+  color: var(--text-primary);
+}
+
+.floods-error {
+  padding: 1.5rem;
+  color: var(--status-critical);
+}
+
+/* Header */
+.floods-header {
+  margin-bottom: 2rem;
+}
+
+.floods-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.floods-subtitle {
+  color: var(--text-secondary);
+}
+
+/* Timeline Section */
+.timeline-section {
+  margin-bottom: 3rem;
+}
+
+.section-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-icon {
+  color: var(--primary-color);
+}
+
+.section-icon-green {
+  color: var(--growth-positive-color);
+}
+
+.timeline-events {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.event-card {
+  background: var(--bg-primary);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.event-card:hover {
+  border-color: var(--primary-color);
+}
+
+.event-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .event-header {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.event-year {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.25rem;
+}
+
+.event-affected {
+  color: var(--text-secondary);
+}
+
+.event-stats {
+  display: flex;
+  gap: 1rem;
+}
+
+.stat-box {
+  text-align: center;
+  padding: 0.5rem 1rem;
+  background: var(--bg-tertiary);
+  border-radius: 0.5rem;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.stat-deaths {
+  color: var(--status-critical);
+}
+
+.stat-loss {
+  color: var(--status-high);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.event-description {
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Charts Grid */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Economic Analysis */
+.economic-analysis {
+  background: var(--bg-primary);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  border: 1px solid var(--border-color);
+}
+
+.economic-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .economic-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.economic-chart {
+  height: 300px;
+}
+

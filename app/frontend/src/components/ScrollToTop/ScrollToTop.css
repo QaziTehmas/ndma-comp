@@ -1,0 +1,47 @@
+.scroll-to-top {
+  position: fixed;
+  left: 28px;
+  bottom: 28px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--button-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: transform 0.18s ease, opacity 0.18s ease, visibility 0.18s;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 60;
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-to-top.hidden {
+  transform: translateY(6px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.scroll-to-top .arrow {
+  font-size: 20px;
+  line-height: 1;
+}
+
+@media (max-width: 480px) {
+  .scroll-to-top {
+    left: 12px;
+    bottom: 12px;
+    width: 40px;
+    height: 40px;
+  }
+}
+

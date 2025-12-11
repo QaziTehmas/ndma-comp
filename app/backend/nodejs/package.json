@@ -1,0 +1,34 @@
+{
+  "name": "pdme-backend",
+  "version": "1.0.0",
+  "description": "PDME Node.js Backend API",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "migrate": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "migrate:reset": "prisma migrate reset",
+    "generate": "prisma generate",
+    "studio": "prisma studio",
+    "seed": "node src/scripts/seed.js",
+    "migrate:json": "node src/scripts/migrateJSON.js"
+  },
+  "keywords": ["pdme", "disaster", "management"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.19.0",
+    "express": "^4.21.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "redis": "^4.7.0",
+    "pg": "^8.12.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "prisma": "^5.19.0",
+    "nodemon": "^3.1.4"
+  }
+}
