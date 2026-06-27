@@ -8,7 +8,7 @@ import requests
 import certifi
 import os
 from datetime import datetime, timedelta
-from typing import Dict
+from typing import Dict, Optional
 
 # Fix SSL certificate issue - use certifi bundle instead of PostgreSQL bundle
 os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
@@ -24,7 +24,8 @@ class FireWeatherService:
         pass
     
     def fetch_fire_weather(self, latitude: float, longitude: float,
-                           year: int, month: int, day: int) -> Dict:
+                           year: int, month: int, day: int,
+                           raw_data: Optional[Dict] = None) -> Dict:
         """
         Fetch weather data for fire risk prediction.
         
@@ -93,19 +94,22 @@ class FireWeatherService:
         }
         
         try:
-            response = requests.get(api_url, params=params, timeout=30)
-            
-            if response.status_code == 400:
-                error_detail = response.text
-                try:
-                    error_json = response.json()
-                    error_detail = error_json.get('reason', error_detail)
-                except:
-                    pass
-                raise ValueError(f"Invalid API request: {error_detail}")
-            
-            response.raise_for_status()
-            data = response.json()
+            if raw_data is not None:
+                data = raw_data
+            else:
+                response = requests.get(api_url, params=params, timeout=30)
+                
+                if response.status_code == 400:
+                    error_detail = response.text
+                    try:
+                        error_json = response.json()
+                        error_detail = error_json.get('reason', error_detail)
+                    except:
+                        pass
+                    raise ValueError(f"Invalid API request: {error_detail}")
+                
+                response.raise_for_status()
+                data = response.json()
             
             if not data.get("daily"):
                 raise ValueError("No daily weather data received from API")

@@ -43,6 +43,7 @@ class FloodPredictionRequest(BaseModel):
     location: str
     latitude: float
     longitude: float
+    raw_weather_data: Optional[dict] = None
 
 class FirePredictionRequest(BaseModel):
     year: int
@@ -51,6 +52,7 @@ class FirePredictionRequest(BaseModel):
     location: str
     latitude: float
     longitude: float
+    raw_weather_data: Optional[dict] = None
 
 @app.get("/")
 def read_root():
@@ -161,7 +163,8 @@ def predict_flood(request: FloodPredictionRequest):
             longitude=request.longitude,
             year=request.year,
             month=request.month,
-            day=request.day
+            day=request.day,
+            raw_data=request.raw_weather_data
         )
         
         # Add location name to weather data
@@ -271,7 +274,8 @@ def predict_flood_current(request: FloodPredictionRequest):
             longitude=request.longitude,
             year=today.year,
             month=today.month,
-            day=today.day
+            day=today.day,
+            raw_data=request.raw_weather_data
         )
         
         # Add location name to weather data
@@ -388,7 +392,8 @@ def predict_fire(request: FirePredictionRequest):
             longitude=request.longitude,
             year=request.year,
             month=request.month,
-            day=request.day
+            day=request.day,
+            raw_data=request.raw_weather_data
         )
         
         # Add location name to weather data
@@ -495,7 +500,8 @@ def predict_fire_current(request: FirePredictionRequest):
             longitude=request.longitude,
             year=today.year,
             month=today.month,
-            day=today.day
+            day=today.day,
+            raw_data=request.raw_weather_data
         )
         
         # Add location name to weather data

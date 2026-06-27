@@ -19,7 +19,8 @@ class WeatherService:
         pass
     
     def fetch_historical_weather(self, latitude: float, longitude: float, 
-                                  year: int, month: int, day: int) -> Dict:
+                                  year: int, month: int, day: int,
+                                  raw_data: Optional[Dict] = None) -> Dict:
         """
         Fetch weather data for a specific date and calculate all required features.
         Uses archive API for past dates and forecast API for future dates.
@@ -97,19 +98,22 @@ class WeatherService:
         }
         
         try:
-            response = requests.get(api_url, params=params, timeout=30)
-            
-            if response.status_code == 400:
-                error_detail = response.text
-                try:
-                    error_json = response.json()
-                    error_detail = error_json.get('reason', error_detail)
-                except:
-                    pass
-                raise ValueError(f"Invalid API request: {error_detail}. Please check the date and location coordinates.")
-            
-            response.raise_for_status()
-            data = response.json()
+            if raw_data is not None:
+                data = raw_data
+            else:
+                response = requests.get(api_url, params=params, timeout=30)
+                
+                if response.status_code == 400:
+                    error_detail = response.text
+                    try:
+                        error_json = response.json()
+                        error_detail = error_json.get('reason', error_detail)
+                    except:
+                        pass
+                    raise ValueError(f"Invalid API request: {error_detail}. Please check the date and location coordinates.")
+                
+                response.raise_for_status()
+                data = response.json()
             
             if not data.get("daily"):
                 raise ValueError("No daily weather data received from API")
