@@ -13,8 +13,23 @@ const BACKEND_URL = PYTHON_BACKEND_URL;
  */
 export async function predictFireRisk(predictionData) {
     try {
-        // 1. Fetch fire weather data directly from browser to bypass Render outbound IP limits
         const targetDate = new Date(predictionData.year, predictionData.month - 1, predictionData.day);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const maxForecastDate = new Date(today);
+        maxForecastDate.setDate(today.getDate() + 16);
+
+        const minHistoricalDate = new Date(1940, 0, 1);
+
+        if (targetDate > maxForecastDate) {
+            throw new Error("Prediction date cannot be more than 16 days in the future. Weather forecast data is only available up to 16 days ahead.");
+        }
+        if (targetDate < minHistoricalDate) {
+            throw new Error("Prediction date cannot be before 1940. Historical weather data is only available from 1940 onwards.");
+        }
+
+        // 1. Fetch fire weather data directly from browser to bypass Render outbound IP limits
         const startDate = new Date(targetDate);
         startDate.setDate(targetDate.getDate() - 1); // 1 day back for fire lagged values
 
@@ -28,8 +43,6 @@ export async function predictFireRisk(predictionData) {
         const startDateStr = formatDate(startDate);
         const endDateStr = formatDate(targetDate);
 
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
         const diffDays = Math.ceil((today - targetDate) / (1000 * 60 * 60 * 24));
 
         const isFuture = targetDate > today;

@@ -83,7 +83,7 @@ const DashboardLayout = () => {
       {/* Sidebar */}
       <aside
         className={clsx(
-          "fixed left-0 top-0 bottom-0 bg-background-light/30 backdrop-blur-md border-r border-sidebar-border z-40 hidden lg:flex flex-col transition-all duration-300",
+          "fixed left-0 top-0 bottom-0 bg-[var(--sidebar-bg)] backdrop-blur-md border-r border-sidebar-border z-40 hidden lg:flex flex-col transition-all duration-300",
           collapsed ? "w-20" : "w-64"
         )}
         onMouseEnter={() => !pinned && setCollapsed(false)}

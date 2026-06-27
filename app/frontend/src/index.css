@@ -55,6 +55,7 @@
   --bg-primary: #f8fafc;    /* Slate 50 */
   --bg-secondary: #ffffff;  /* White */
   --bg-tertiary: #f1f5f9;   /* Slate 100 */
+  --sidebar-bg: rgba(219, 234, 254, 0.75); /* Lighter version of 3b82f6 with glass effect */
 
   --navbar-bg: rgba(255, 255, 255, 0.8);
   --card-bg: #ffffff;
@@ -126,6 +127,7 @@
   --bg-primary: #f0f5ff; /* Soft Alice Blue - very pleasant */
   --bg-secondary: #ffffff;
   --bg-tertiary: #f8fafc;
+  --sidebar-bg: rgba(219, 234, 254, 0.75); /* Lighter version of 3b82f6 */
 
   /* High contrast but softer than pure black */
   --text-primary: #0f172a; 
@@ -163,13 +165,14 @@
   --text-secondary: #94a3b8; /* Slate 400 */
   --text-muted: #64748b;    /* Slate 500 */
 
-  --bg-primary: #020617;    /* Slate 950 */
+  --bg-primary: #0b1129;    /* Lighter midnight navy version of #020617 */
   --bg-secondary: #0f172a;  /* Slate 900 */
   --bg-tertiary: #1e293b;   /* Slate 800 */
+  --sidebar-bg: rgba(15, 23, 42, 0.3); /* Keep dark sidebar as is */
 
-  --navbar-bg: rgba(15, 23, 42, 0.7);
+  --navbar-bg: rgba(11, 17, 41, 0.7);
   --card-bg: #1e293b;
-  --section-bg: #020617;
+  --section-bg: #0b1129;
 
   --border-color: #334155;
   --sidebar-border: #334155;

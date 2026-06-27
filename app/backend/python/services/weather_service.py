@@ -50,8 +50,7 @@ class WeatherService:
         if is_future:
             max_forecast_date = today_date + timedelta(days=16)
             if target_date > max_forecast_date:
-                # For dates beyond forecast range, use seasonal averages based on historical data
-                print(f"Note: Date {target_date.strftime('%Y-%m-%d')} is beyond forecast range. Using seasonal estimates.")
+                raise ValueError("Prediction date cannot be more than 16 days in the future. Weather forecast data is only available up to 16 days ahead.")
         
         start_date = target_date - timedelta(days=7)  # Get 7 days before for averages
         

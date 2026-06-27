@@ -57,6 +57,14 @@ class FireWeatherService:
         # Determine if we're fetching historical or forecast data
         is_future = target_date > today_date
         
+        # Check date limits
+        if not is_future and year < 1940:
+            raise ValueError(f"Year {year} is too early. Historical weather data is typically available from 1940 onwards.")
+        if is_future:
+            max_forecast_date = today_date + timedelta(days=16)
+            if target_date > max_forecast_date:
+                raise ValueError("Prediction date cannot be more than 16 days in the future. Weather forecast data is only available up to 16 days ahead.")
+        
         # Get yesterday's date for lagged values
         yesterday = target_date - timedelta(days=1)
         
