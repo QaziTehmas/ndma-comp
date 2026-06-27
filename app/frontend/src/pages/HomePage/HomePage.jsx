@@ -101,7 +101,7 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8">
         {/* Background Image */}
-        <div className="absolute inset-0 bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url('/src/assets/map.png')` }}>
+        <div className="absolute inset-0 bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url('/map.png')` }}>
           {/* Light Theme Overlay: keep transparent to show the map */}
           <div className="absolute inset-0 bg-transparent dark:hidden transition-colors duration-300" />
           {/* Dark Theme Overlay: subtle darkening for readability */}
