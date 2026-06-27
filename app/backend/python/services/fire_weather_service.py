@@ -75,8 +75,10 @@ class FireWeatherService:
             "precipitation_sum"
         ]
         
-        # Choose API based on date
-        if is_future:
+        # Choose API based on date. Use Forecast API for future dates and recent dates (within 30 days)
+        # to ensure real-time weather data is available and avoid archive latency/availability limits.
+        days_diff = (today_date - target_date).days
+        if is_future or days_diff <= 30:
             api_url = self.FORECAST_URL
         else:
             api_url = self.ARCHIVE_URL

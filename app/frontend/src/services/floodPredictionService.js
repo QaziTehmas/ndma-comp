@@ -1,5 +1,7 @@
-// Use relative URL to go through Vite proxy in development, or absolute URL in production
-const BACKEND_URL = import.meta.env.DEV ? '' : 'http://localhost:8000';
+import { PYTHON_BACKEND_URL } from '../config/env';
+
+// Use dynamic backend URL configuration
+const BACKEND_URL = PYTHON_BACKEND_URL;
 
 export async function predictFlood(predictionData) {
   try {

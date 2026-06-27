@@ -12,7 +12,7 @@
     "migrate:reset": "prisma migrate reset",
     "generate": "prisma generate",
     "studio": "prisma studio",
-    "seed": "node src/scripts/seed.js",
+    "seed": "node src/scripts/migrateJSON.js",
     "migrate:json": "node src/scripts/migrateJSON.js",
     "migrate:emergency": "node src/scripts/migrateEmergencyOperations.js"
   },

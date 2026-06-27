@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FileDown, Loader2 } from 'lucide-react';
 import { fetchWeatherForLocation } from '../../services/weatherService';
+import { PYTHON_BACKEND_URL } from '../../config/env';
 
 const DownloadReportButton = ({
     selectedLocation = null,
@@ -17,7 +18,7 @@ const DownloadReportButton = ({
             console.log('Starting PDF generation...');
 
             // 1. Fetch flood data from backend (Independent of location)
-            const floodResponse = await fetch('http://localhost:8000/api/flood-data');
+            const floodResponse = await fetch(`${PYTHON_BACKEND_URL}/api/flood-data`);
             if (!floodResponse.ok) throw new Error('Failed to fetch flood data');
             const floodData = await floodResponse.json();
 

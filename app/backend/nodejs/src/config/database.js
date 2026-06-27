@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
   // Development: log all queries
   if (!global.prisma) {
     global.prisma = new PrismaClient({
-      log: ['query', 'error', 'warn'],
+      log: [/* 'query', */ 'error', 'warn'],
     });
   }
   prisma = global.prisma;

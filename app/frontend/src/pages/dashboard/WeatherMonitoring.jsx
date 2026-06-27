@@ -10,6 +10,7 @@ import { fetchMultipleCities } from '../../services/weatherService';
 import { PAKISTAN_CITIES, PAKISTAN_BOUNDS } from '../../data/pakistanCities';
 import { motion, AnimatePresence } from 'framer-motion';
 import DownloadReportButton from '../../components/DownloadReportButton';
+import { PYTHON_BACKEND_URL } from '../../config/env';
 
 /**
  * WeatherMonitoring - Professional Dashboard with Advanced Animations
@@ -51,7 +52,7 @@ const WeatherMonitoring = () => {
       if (!selectedLocation.name) return;
       try {
         setRiskSummary(null); // Reset
-        const response = await fetch(`http://localhost:8000/api/history-risk?location=${encodeURIComponent(selectedLocation.name)}`);
+        const response = await fetch(`${PYTHON_BACKEND_URL}/api/history-risk?location=${encodeURIComponent(selectedLocation.name)}`);
         const data = await response.json();
         setRiskSummary(data.risk_analysis);
       } catch (e) {

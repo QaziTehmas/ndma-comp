@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Bot, User, Loader2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import './ChatBot.css';
+import { PYTHON_BACKEND_URL } from '../../config/env';
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,8 +31,8 @@ const ChatBot = () => {
     setIsLoading(true);
 
     try {
-      console.log("Sending request to:", `http://localhost:8000/api/chat?query=${encodeURIComponent(userMessage.text)}`);
-      const response = await fetch(`http://localhost:8000/api/chat?query=${encodeURIComponent(userMessage.text)}`);
+      console.log("Sending request to:", `${PYTHON_BACKEND_URL}/api/chat?query=${encodeURIComponent(userMessage.text)}`);
+      const response = await fetch(`${PYTHON_BACKEND_URL}/api/chat?query=${encodeURIComponent(userMessage.text)}`);
       console.log("Response status:", response.status);
       
       if (!response.ok) {

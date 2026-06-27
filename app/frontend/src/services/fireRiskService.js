@@ -1,7 +1,8 @@
 // Fire Risk Prediction Service
 // Calls the backend API for fire risk predictions
+import { PYTHON_BACKEND_URL } from '../config/env';
 
-const BACKEND_URL = import.meta.env.DEV ? '' : 'http://localhost:8000';
+const BACKEND_URL = PYTHON_BACKEND_URL;
 
 /**
  * Predict fire risk for a location and date.

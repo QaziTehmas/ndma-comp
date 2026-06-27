@@ -1,3 +1,5 @@
+import { PYTHON_BACKEND_URL } from '../config/env';
+
 /**
  * Water Data Service
  * Simulates the backend logic for processing IRSA River/Dam reports.
@@ -96,7 +98,7 @@ export function getRiskColor(level) {
 export async function fetchFloodData() {
     try {
         // 1. Try Local Python Backend (Real/Cached Data)
-        const response = await fetch('http://localhost:8000/api/flood-data', {
+        const response = await fetch(`${PYTHON_BACKEND_URL}/api/flood-data`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
