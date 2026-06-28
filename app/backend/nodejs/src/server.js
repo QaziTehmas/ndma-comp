@@ -14,8 +14,22 @@ import emergencyOperationsRoutes from './routes/api/emergency-operations.js';
 const app = express();
 
 // Middleware
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  config.frontendUrl,
+].filter(Boolean);
+
 app.use(cors({
-  origin: config.frontendUrl,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, or backend-to-backend)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+    const errorMsg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+    return callback(new Error(errorMsg), false);
+  },
   credentials: true,
 }));
 app.use(express.json());
