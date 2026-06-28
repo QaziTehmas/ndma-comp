@@ -224,7 +224,7 @@ Make sure to create `.env` files in all three locations with the following struc
 ### Node.js Backend Env (`app/backend/nodejs/.env`)
 ```env
 # PostgreSQL Database URL (Neon Cloud or Local Postgres instance)
-DATABASE_URL="postgresql://neondb_owner:npg_95pRbemGrfPB@ep-autumn-wind-at1r544a-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+DATABASE_URL="postgresql://your_db_user:your_db_password@your_db_host/your_db_name?sslmode=require"
 
 # Python prediction engine location
 PYTHON_BACKEND_URL="http://localhost:8000"
